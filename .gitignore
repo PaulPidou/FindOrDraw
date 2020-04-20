@@ -1,0 +1,5 @@
+.idea/*
+.expo/*
+node_modules/*
+*.h5
+yarn.lock
