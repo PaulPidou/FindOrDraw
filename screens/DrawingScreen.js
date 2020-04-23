@@ -1,7 +1,11 @@
-import Expo from 'expo';
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import { Image, Button, Platform, AppState, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, Button, Platform, AppState, StyleSheet, Text, View } from 'react-native';
+import * as tf from '@tensorflow/tfjs';
+import { fetch, decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
+
+const modelJson = require('../assets/model/model.json');
+//const modelWeights = require('../assets/model/group1-shard1of4.bin');
 
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
@@ -16,16 +20,9 @@ function uuidv4() {
 export default class DrawingScreen extends Component {
     state = {
         image: null,
-        strokeColor: Math.random() * 0xffffff,
-        strokeWidth: Math.random() * 30 + 10,
-        lines: [
-            {
-                points: [{ x: 300, y: 300 }, { x: 600, y: 300 }, { x: 450, y: 600 }, { x: 300, y: 300 }],
-                color: 0xff00ff,
-                alpha: 1,
-                width: 10,
-            },
-        ],
+        strokeColor: 0x000000,
+        strokeWidth: 15,
+        lines: [],
         appState: AppState.currentState,
     };
 
@@ -48,23 +45,28 @@ export default class DrawingScreen extends Component {
     }
 
     onChangeAsync = async () => {
-        const { uri } = await this.sketch.takeSnapshotAsync();
+        const options = {
+            format: 'png', /// PNG because the view has a clear background
+            quality: 0.2, /// Low quality works because it's just a line
+            result: 'file'
+        };
+
+        const { uri } = await this.sketch.takeSnapshotAsync(options);
 
         this.setState({
             image: { uri },
-            strokeWidth: Math.random() * 30 + 10,
-            strokeColor: Math.random() * 0xffffff,
+            //strokeWidth: Math.random() * 30 + 10,
+            //strokeColor: Math.random() * 0xffffff,
         });
-    };
-
-    onReady = () => {
-        console.log('ready!');
     };
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.container}>
+                    <View style={styles.label}>
+                        <Text>Canvas - draw here</Text>
+                    </View>
                     <View style={styles.sketchContainer}>
                         <ExpoPixi.Sketch
                             ref={ref => (this.sketch = ref)}
@@ -76,9 +78,6 @@ export default class DrawingScreen extends Component {
                             onReady={this.onReady}
                             initialLines={this.state.lines}
                         />
-                        <View style={styles.label}>
-                            <Text>Canvas - draw here</Text>
-                        </View>
                     </View>
                     <View style={styles.imageContainer}>
                         <View style={styles.label}>
@@ -91,9 +90,7 @@ export default class DrawingScreen extends Component {
                     color={'blue'}
                     title="undo"
                     style={styles.button}
-                    onPress={() => {
-                        this.sketch.undo();
-                    }}
+                    onPress={() => { this.sketch.undo(); }}
                 />
             </View>
         );
@@ -105,10 +102,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     sketch: {
-        flex: 1,
+        flex: 1
     },
     sketchContainer: {
-        height: '50%',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').width
     },
     image: {
         flex: 1,
