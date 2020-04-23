@@ -1,11 +1,11 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import { Dimensions, Image, Button, Platform, AppState, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Button, Platform, AppState, StyleSheet, Text, View } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import { fetch, decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
 
 const modelJson = require('../assets/model/model.json');
-//const modelWeights = require('../assets/model/group1-shard1of4.bin');
+const modelWeights = require('../assets/model/group1-shard1of4.bin');
 
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
@@ -18,13 +18,18 @@ function uuidv4() {
 }
 
 export default class DrawingScreen extends Component {
-    state = {
-        image: null,
-        strokeColor: 0x000000,
-        strokeWidth: 15,
-        lines: [],
-        appState: AppState.currentState,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            image: null,
+            strokeColor: 0x000000,
+            strokeWidth: 15,
+            lines: [],
+            prediction: 'potato',
+            appState: AppState.currentState,
+        };
+    }
+
 
     handleAppStateChangeAsync = nextAppState => {
         if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
@@ -36,8 +41,9 @@ export default class DrawingScreen extends Component {
         this.setState({ appState: nextAppState });
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChangeAsync);
+        const model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeights));
     }
 
     componentWillUnmount() {
@@ -50,14 +56,8 @@ export default class DrawingScreen extends Component {
             quality: 0.2, /// Low quality works because it's just a line
             result: 'file'
         };
-
         const { uri } = await this.sketch.takeSnapshotAsync(options);
-
-        this.setState({
-            image: { uri },
-            //strokeWidth: Math.random() * 30 + 10,
-            //strokeColor: Math.random() * 0xffffff,
-        });
+        this.setState({ image: { uri } });
     };
 
     render() {
@@ -81,9 +81,8 @@ export default class DrawingScreen extends Component {
                     </View>
                     <View style={styles.imageContainer}>
                         <View style={styles.label}>
-                            <Text>Snapshot</Text>
+                            <Text>{`I see ${this.state.prediction}`}</Text>
                         </View>
-                        <Image style={styles.image} source={this.state.image} />
                     </View>
                 </View>
                 <Button
@@ -112,7 +111,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     imageContainer: {
-        height: '50%',
         borderTopWidth: 4,
         borderTopColor: '#E44262',
     },
