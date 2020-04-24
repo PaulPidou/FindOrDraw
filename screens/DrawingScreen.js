@@ -1,18 +1,20 @@
 import * as ExpoPixi from 'expo-pixi';
-import React, { Component } from 'react';
-import { Dimensions, Button, Platform, AppState, StyleSheet, Text, View, Image } from 'react-native';
+import React, {Component} from 'react';
+import {Dimensions, Button, Platform, AppState, StyleSheet, Text, View, Image, StatusBar} from 'react-native';
 import * as tf from '@tensorflow/tfjs';
-import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
+import {bundleResourceIO} from '@tensorflow/tfjs-react-native';
 
 import QUICKDRAW_CLASSES from '../assets/model/quickdraw_classes.json'
+import Constants from "expo-constants";
 
 const modelJson = require('../assets/model/model.json');
 const modelWeights = require('../assets/model/group1-shard1of1.bin');
 
 const isAndroid = Platform.OS === 'android';
+
 function uuidv4() {
     //https://stackoverflow.com/a/2117523/4047926
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
         var r = (Math.random() * 16) | 0,
             v = c == 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
@@ -27,28 +29,28 @@ export default class DrawingScreen extends Component {
             strokeColor: 0x000000,
             strokeWidth: 15,
             lines: [],
-            prediction: 'potato',
+            prediction: null,
             appState: AppState.currentState,
-            model: null
+            model: null,
+            thinking: false
         };
         console.log(QUICKDRAW_CLASSES)
     }
 
-
     handleAppStateChangeAsync = nextAppState => {
         if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
             if (isAndroid && this.sketch) {
-                this.setState({ appState: nextAppState, id: uuidv4(), lines: this.sketch.lines });
+                this.setState({appState: nextAppState, id: uuidv4(), lines: this.sketch.lines});
                 return;
             }
         }
-        this.setState({ appState: nextAppState });
+        this.setState({appState: nextAppState});
     };
 
     async componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChangeAsync);
         const model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeights));
-        this.setState({ model })
+        this.setState({model})
     }
 
     componentWillUnmount() {
@@ -80,10 +82,12 @@ export default class DrawingScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.container}>
-                    <View style={styles.label}>
-                        <Text>Canvas - draw here</Text>
-                    </View>
+                <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true} />
+                <View>
+                    <Text style={styles.title}>Draw me something !</Text>
+                </View>
+                <View style={styles.gameZone}>
+
                     <View style={styles.sketchContainer}>
                         <ExpoPixi.Sketch
                             ref={ref => (this.sketch = ref)}
@@ -91,23 +95,35 @@ export default class DrawingScreen extends Component {
                             strokeColor={this.state.strokeColor}
                             strokeWidth={this.state.strokeWidth}
                             strokeAlpha={1}
-                            onChange={this.onChangeAsync}
-                            onReady={this.onReady}
+                            //onChange={this.onChangeAsync}
+                            //onReady={this.onReady}
                             initialLines={this.state.lines}
                         />
                     </View>
-                    <View style={styles.imageContainer}>
-                        <View style={styles.label}>
-                            <Text>{`I see ${this.state.prediction}`}</Text>
-                        </View>
+                    <View style={styles.result}>
+
+                    {(() => {
+                        if(this.state.thinking){
+                            return <Text style={styles.resultContextText}>Voyons voir...</Text>
+                        } else if (this.state.prediction){
+                            return <>
+                                <Text style={styles.resultContextText}>Je vois :</Text>
+                                <Text style={styles.resultText}>{`${this.state.prediction}`}</Text>
+                            </>
+                        } else {
+                            return null
+                        }
+                    })()}
+
                     </View>
-                    <Image style={styles.image} source={this.state.image} />
                 </View>
                 <Button
                     color={'blue'}
                     title="undo"
                     style={styles.button}
-                    onPress={() => { this.sketch.undo(); }}
+                    onPress={() => {
+                        this.sketch.undo();
+                    }}
                 />
             </View>
         );
@@ -115,24 +131,56 @@ export default class DrawingScreen extends Component {
 }
 
 const styles = StyleSheet.create({
+    gameZone: {
+        flex: 1,
+        alignItems: 'center',
+        padding: 30
+    },
+    title: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 30,
+        width: '100%',
+        paddingVertical: 20,
+        textAlign: 'center'
+    },
     container: {
         flex: 1,
-    },
-    sketch: {
-        flex: 1
+        backgroundColor: '#01374A',
+        paddingTop: Constants.statusBarHeight
     },
     sketchContainer: {
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').width
+        flex: 1
+    },
+    sketch: {
+        alignItems: 'center',
+        borderWidth: 2,
+        borderColor: "black",
+        backgroundColor: 'white',
+        width: Dimensions.get('window').width - 120,
+        height: Dimensions.get('window').width - 120,
+    },
+    result: {
+        flex: 1,
+        alignItems: "center",
+
+    },
+    resultContextText : {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 50,
+        paddingBottom: 20
+    },
+    resultText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 70,
     },
     image: {
         flex: 1,
         resizeMode: 'contain'
     },
-    imageContainer: {
-        borderTopWidth: 4,
-        borderTopColor: '#E44262',
-    },
+    imageContainer: {},
     label: {
         width: '100%',
         padding: 5,
@@ -140,7 +188,7 @@ const styles = StyleSheet.create({
     },
     button: {
         zIndex: 1,
-        padding: 12,
+        padding: 15,
         minWidth: 56,
         minHeight: 48,
     },
