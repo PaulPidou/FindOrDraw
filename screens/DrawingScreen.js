@@ -56,27 +56,25 @@ export default class DrawingScreen extends Component {
     }
 
     onChangeAsync = async () => {
-        const img = await this.sketch.takeSnapshotAsync({ format: 'png' });
-        this.setState({ image: { uri: img.uri } });
-        console.log(img)
-        //console.log(this.state.lines.length)
+        //const img = await this.sketch.takeSnapshotAsync({ format: 'png' });
+        //this.setState({ image: { uri: img.uri } });
+        //console.log(img)
+
         const arr = this.sketch.renderer.extract.pixels()
-        //console.log(arr.length)
 
-        const image = tf.tensor(arr).reshape([1080, 1080, 4])
-        const grayScaleImg = tf.mean(image, 2).expandDims(2)
-        //console.log(tf.mean(tensor).print())
-        //console.log(tf.mean(tensor, 2).expandDims(2).shape)
-        const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
-        const batchedImage = resizedImage.expandDims(0)
-        const scaledImage = batchedImage.toFloat().div(tf.scalar(255))
+        const scaledImage = tf.tidy(() => {
+            const image = tf.tensor(arr).reshape([1080, 1080, 4])
+            const grayScaleImg = tf.mean(image, 2).expandDims(2)
+            const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
+            const batchedImage = resizedImage.expandDims(0)
+            return batchedImage.toFloat().div(tf.scalar(255))
+        });
 
-        const prediction = (await this.state.model.predict(scaledImage))
+        const prediction = await this.state.model.predict(scaledImage)
         const predictedTensor = prediction.as1D().argMax()
         const predictedValue = (await predictedTensor.data())[0]
         console.log(predictedValue)
         console.log(QUICKDRAW_CLASSES[predictedValue])
-
     };
 
     render() {
