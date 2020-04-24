@@ -1,11 +1,13 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, { Component } from 'react';
-import { Dimensions, Button, Platform, AppState, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Button, Platform, AppState, StyleSheet, Text, View, Image } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
-import { fetch, decodeJpeg, bundleResourceIO } from '@tensorflow/tfjs-react-native';
+import { bundleResourceIO } from '@tensorflow/tfjs-react-native';
+
+import QUICKDRAW_CLASSES from '../assets/model/quickdraw_classes.json'
 
 const modelJson = require('../assets/model/model.json');
-const modelWeights = require('../assets/model/group1-shard1of4.bin');
+const modelWeights = require('../assets/model/group1-shard1of1.bin');
 
 const isAndroid = Platform.OS === 'android';
 function uuidv4() {
@@ -27,7 +29,9 @@ export default class DrawingScreen extends Component {
             lines: [],
             prediction: 'potato',
             appState: AppState.currentState,
+            model: null
         };
+        console.log(QUICKDRAW_CLASSES)
     }
 
 
@@ -44,6 +48,7 @@ export default class DrawingScreen extends Component {
     async componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChangeAsync);
         const model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeights));
+        this.setState({ model })
     }
 
     componentWillUnmount() {
@@ -51,13 +56,27 @@ export default class DrawingScreen extends Component {
     }
 
     onChangeAsync = async () => {
-        const options = {
-            format: 'png', /// PNG because the view has a clear background
-            quality: 0.2, /// Low quality works because it's just a line
-            result: 'file'
-        };
-        const { uri } = await this.sketch.takeSnapshotAsync(options);
-        this.setState({ image: { uri } });
+        const img = await this.sketch.takeSnapshotAsync({ format: 'png' });
+        this.setState({ image: { uri: img.uri } });
+        console.log(img)
+        //console.log(this.state.lines.length)
+        const arr = this.sketch.renderer.extract.pixels()
+        //console.log(arr.length)
+
+        const image = tf.tensor(arr).reshape([1080, 1080, 4])
+        const grayScaleImg = tf.mean(image, 2).expandDims(2)
+        //console.log(tf.mean(tensor).print())
+        //console.log(tf.mean(tensor, 2).expandDims(2).shape)
+        const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
+        const batchedImage = resizedImage.expandDims(0)
+        const scaledImage = batchedImage.toFloat().div(tf.scalar(255))
+
+        const prediction = (await this.state.model.predict(scaledImage))
+        const predictedTensor = prediction.as1D().argMax()
+        const predictedValue = (await predictedTensor.data())[0]
+        console.log(predictedValue)
+        console.log(QUICKDRAW_CLASSES[predictedValue])
+
     };
 
     render() {
@@ -84,6 +103,7 @@ export default class DrawingScreen extends Component {
                             <Text>{`I see ${this.state.prediction}`}</Text>
                         </View>
                     </View>
+                    <Image style={styles.image} source={this.state.image} />
                 </View>
                 <Button
                     color={'blue'}
@@ -109,6 +129,7 @@ const styles = StyleSheet.create({
     },
     image: {
         flex: 1,
+        resizeMode: 'contain'
     },
     imageContainer: {
         borderTopWidth: 4,
@@ -120,9 +141,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     button: {
-        // position: 'absolute',
-        // bottom: 8,
-        // left: 8,
         zIndex: 1,
         padding: 12,
         minWidth: 56,
