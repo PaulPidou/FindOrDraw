@@ -49,7 +49,7 @@ export default class DrawingScreen extends Component {
 
     async componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChangeAsync);
-        loadModel()
+        await loadModel()
         this.setState({ready: true})
     }
 
