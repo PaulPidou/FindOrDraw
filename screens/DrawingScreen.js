@@ -36,7 +36,6 @@ export default class DrawingScreen extends Component {
             model: null,
             thinking: false
         };
-        console.log(QUICKDRAW_CLASSES)
     }
 
     handleAppStateChangeAsync = nextAppState => {
@@ -69,7 +68,7 @@ export default class DrawingScreen extends Component {
 
         const scaledImage = tf.tidy(() => {
             const image = tf.tensor(arr).reshape([Math.sqrt(arr.length / 4), Math.sqrt(arr.length / 4), 4])
-            const grayScaleImg = tf.mean(image, 2).expandDims(2)
+            const grayScaleImg = tf.max(image, 2).expandDims(2)
             const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
             const batchedImage = resizedImage.expandDims(0)
             return batchedImage.toFloat().div(tf.scalar(255))
@@ -97,7 +96,6 @@ export default class DrawingScreen extends Component {
                     <Text style={styles.title}>Draw me something !</Text>
                 </View>
                 <View style={styles.gameZone}>
-
                     <View style={styles.sketchContainer}>
                         <ExpoPixi.Sketch
                             ref={ref => (this.sketch = ref)}
@@ -111,7 +109,6 @@ export default class DrawingScreen extends Component {
                         />
                     </View>
                     <View style={styles.result}>
-
                         {(() => {
                             if (!this.state.model) {
                                 return <Text style={styles.resultContextText}>Chargement..</Text>
