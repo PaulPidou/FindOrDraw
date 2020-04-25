@@ -1,11 +1,13 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
-import {Dimensions, Button, Platform, AppState, StyleSheet, Text, View, Image, StatusBar} from 'react-native';
+import {Dimensions, Button, Platform, AppState, StyleSheet, View, Image, StatusBar} from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import {bundleResourceIO} from '@tensorflow/tfjs-react-native';
 
 import QUICKDRAW_CLASSES from '../assets/model/quickdraw_classes.json'
 import Constants from "expo-constants";
+import * as Colors from "./Constants/Constants";
+import Text from "../Components/Text";
 
 const modelJson = require('../assets/model/model.json');
 const modelWeights = require('../assets/model/group1-shard1of1.bin');
@@ -58,6 +60,7 @@ export default class DrawingScreen extends Component {
     }
 
     onChangeAsync = async () => {
+        this.setState({thinking: true})
         //const img = await this.sketch.takeSnapshotAsync({ format: 'png' });
         //this.setState({ image: { uri: img.uri } });
         //console.log(img)
@@ -65,24 +68,31 @@ export default class DrawingScreen extends Component {
         const arr = this.sketch.renderer.extract.pixels()
 
         const scaledImage = tf.tidy(() => {
-            const image = tf.tensor(arr).reshape([1080, 1080, 4])
+            const image = tf.tensor(arr).reshape([Math.sqrt(arr.length / 4), Math.sqrt(arr.length / 4), 4])
             const grayScaleImg = tf.mean(image, 2).expandDims(2)
             const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
             const batchedImage = resizedImage.expandDims(0)
             return batchedImage.toFloat().div(tf.scalar(255))
         });
 
-        const prediction = await this.state.model.predict(scaledImage)
-        const predictedTensor = prediction.as1D().argMax()
-        const predictedValue = (await predictedTensor.data())[0]
-        console.log(predictedValue)
-        console.log(QUICKDRAW_CLASSES[predictedValue])
+        if (this.state.model) {
+
+            const prediction = await this.state.model.predict(scaledImage)
+            const predictedTensor = prediction.as1D().argMax()
+            const predictedValue = (await predictedTensor.data())[0]
+            this.setState({
+                prediction: QUICKDRAW_CLASSES[predictedValue],
+                thinking: false
+            })
+        } else {
+            this.setState({thinking: false})
+        }
     };
 
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true} />
+                <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <View>
                     <Text style={styles.title}>Draw me something !</Text>
                 </View>
@@ -95,30 +105,33 @@ export default class DrawingScreen extends Component {
                             strokeColor={this.state.strokeColor}
                             strokeWidth={this.state.strokeWidth}
                             strokeAlpha={1}
-                            //onChange={this.onChangeAsync}
-                            //onReady={this.onReady}
+                            onChange={this.onChangeAsync}
+                            onReady={this.onReady}
                             initialLines={this.state.lines}
                         />
                     </View>
                     <View style={styles.result}>
 
-                    {(() => {
-                        if(this.state.thinking){
-                            return <Text style={styles.resultContextText}>Voyons voir...</Text>
-                        } else if (this.state.prediction){
-                            return <>
-                                <Text style={styles.resultContextText}>Je vois :</Text>
-                                <Text style={styles.resultText}>{`${this.state.prediction}`}</Text>
-                            </>
-                        } else {
-                            return null
-                        }
-                    })()}
+                        {(() => {
+                            if (!this.state.model) {
+                                return <Text style={styles.resultContextText}>Chargement..</Text>
+                            }
+                            if (this.state.thinking) {
+                                return <Text style={styles.resultContextText}>Voyons voir...</Text>
+                            } else if (this.state.prediction) {
+                                return <>
+                                    <Text style={styles.resultContextText}>Je vois :</Text>
+                                    <Text style={styles.resultText}>{`${this.state.prediction}`}</Text>
+                                </>
+                            } else {
+                                return null
+                            }
+                        })()}
 
                     </View>
                 </View>
                 <Button
-                    color={'blue'}
+                    color={Colors.VertLogo}
                     title="undo"
                     style={styles.button}
                     onPress={() => {
@@ -137,7 +150,6 @@ const styles = StyleSheet.create({
         padding: 30
     },
     title: {
-        color: 'white',
         fontWeight: 'bold',
         fontSize: 30,
         width: '100%',
@@ -146,14 +158,13 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: '#01374A',
+        backgroundColor: Colors.BackgroundColor,
         paddingTop: Constants.statusBarHeight
     },
     sketchContainer: {
         flex: 1
     },
     sketch: {
-        alignItems: 'center',
         borderWidth: 2,
         borderColor: "black",
         backgroundColor: 'white',
@@ -165,14 +176,12 @@ const styles = StyleSheet.create({
         alignItems: "center",
 
     },
-    resultContextText : {
-        color: 'white',
+    resultContextText: {
         fontWeight: 'bold',
         fontSize: 50,
         paddingBottom: 20
     },
     resultText: {
-        color: 'white',
         fontWeight: 'bold',
         fontSize: 70,
     },
