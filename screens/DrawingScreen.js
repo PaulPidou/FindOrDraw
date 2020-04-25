@@ -8,9 +8,8 @@ import QUICKDRAW_CLASSES from '../assets/model/quickdraw_classes.json'
 import Constants from "expo-constants";
 import * as Colors from "./Constants/Constants";
 import Text from "../Components/Text";
-
-const modelJson = require('../assets/model/model.json');
-const modelWeights = require('../assets/model/group1-shard1of1.bin');
+import {transposeAndApplyAlpha} from "../Helpers/ImageTransformer";
+import {loadModel, predictFromDraw} from "../Helpers/Prediction";
 
 const isAndroid = Platform.OS === 'android';
 
@@ -33,7 +32,7 @@ export default class DrawingScreen extends Component {
             lines: [],
             prediction: null,
             appState: AppState.currentState,
-            model: null,
+            ready: false,
             thinking: false
         };
     }
@@ -50,42 +49,29 @@ export default class DrawingScreen extends Component {
 
     async componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChangeAsync);
-        const model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeights));
-        this.setState({model})
+        loadModel()
+        this.setState({ready: true})
     }
 
     componentWillUnmount() {
         AppState.removeEventListener('change', this.handleAppStateChangeAsync);
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+    }
+
     onChangeAsync = async () => {
         this.setState({thinking: true})
-        const img = await this.sketch.takeSnapshotAsync({ format: 'png' });
-        //this.setState({ image: { uri: img.uri } });
-        //console.log(img)
-
+        const img = await this.sketch.takeSnapshotAsync({format: 'png'});
         const pixels = this.sketch.renderer.extract.pixels()
-        const image = tf.browser.fromPixels({data: pixels, width: img.width, height: img.height})
+        const normalizedRGBPixels = transposeAndApplyAlpha(pixels, img.width, img.height)
 
-        const scaledImage = tf.tidy(() => {
-            //const image = tf.tensor(pixels).reshape([img.height, img.width, 4])
-            const grayScaleImg = tf.max(image, 2).expandDims(2)
-            const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
-            const batchedImage = resizedImage.expandDims(0)
-            return batchedImage.toFloat().div(tf.scalar(255))
-        });
+        const prediction = await predictFromDraw(normalizedRGBPixels, img.width, img.height)
 
-        if (this.state.model) {
-            const prediction = await this.state.model.predict(scaledImage)
-            const predictedTensor = prediction.as1D().argMax()
-            const predictedValue = (await predictedTensor.data())[0]
-            this.setState({
-                prediction: QUICKDRAW_CLASSES[predictedValue],
-                thinking: false
-            })
-        } else {
-            this.setState({thinking: false})
-        }
+        this.setState({
+            prediction,
+            thinking: false
+        })
     };
 
     render() {
@@ -111,7 +97,7 @@ export default class DrawingScreen extends Component {
                 </View>
                 <View style={styles.result}>
                     {(() => {
-                        if (!this.state.model) {
+                        if (!this.state.ready) {
                             return <Text style={styles.resultContextText}>Chargement...</Text>
                         }
                         if (this.state.thinking) {
@@ -125,6 +111,12 @@ export default class DrawingScreen extends Component {
                             return null
                         }
                     })()}
+                    <Button
+                        title={'Recharger'}
+                        onPress={() => {
+                            this.onChangeAsync()
+                        }}
+                    />
                 </View>
                 <Button
                     color={Colors.VertLogo}
@@ -161,11 +153,12 @@ const styles = StyleSheet.create({
         flex: 1
     },
     sketch: {
-        borderWidth: 2,
+        // borderWidth: 2,
         borderColor: "black",
         backgroundColor: 'white',
         width: Dimensions.get('window').width - 120,
         height: Dimensions.get('window').width - 120,
+
     },
     result: {
         flex: 1,
