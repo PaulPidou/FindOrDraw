@@ -65,9 +65,10 @@ export default class DrawingScreen extends Component {
         //console.log(img)
 
         const pixels = this.sketch.renderer.extract.pixels()
+        const image = tf.browser.fromPixels({data: pixels, width: img.width, height: img.height})
 
         const scaledImage = tf.tidy(() => {
-            const image = tf.tensor(pixels).reshape([img.height, img.width, 4])
+            //const image = tf.tensor(pixels).reshape([img.height, img.width, 4])
             const grayScaleImg = tf.max(image, 2).expandDims(2)
             const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
             const batchedImage = resizedImage.expandDims(0)
