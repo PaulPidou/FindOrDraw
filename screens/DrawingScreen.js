@@ -60,14 +60,14 @@ export default class DrawingScreen extends Component {
 
     onChangeAsync = async () => {
         this.setState({thinking: true})
-        //const img = await this.sketch.takeSnapshotAsync({ format: 'png' });
+        const img = await this.sketch.takeSnapshotAsync({ format: 'png' });
         //this.setState({ image: { uri: img.uri } });
         //console.log(img)
 
-        const arr = this.sketch.renderer.extract.pixels()
+        const pixels = this.sketch.renderer.extract.pixels()
 
         const scaledImage = tf.tidy(() => {
-            const image = tf.tensor(arr).reshape([Math.sqrt(arr.length / 4), Math.sqrt(arr.length / 4), 4])
+            const image = tf.tensor(pixels).reshape([img.height, img.width, 4])
             const grayScaleImg = tf.max(image, 2).expandDims(2)
             const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
             const batchedImage = resizedImage.expandDims(0)
@@ -75,7 +75,6 @@ export default class DrawingScreen extends Component {
         });
 
         if (this.state.model) {
-
             const prediction = await this.state.model.predict(scaledImage)
             const predictedTensor = prediction.as1D().argMax()
             const predictedValue = (await predictedTensor.data())[0]
@@ -108,24 +107,23 @@ export default class DrawingScreen extends Component {
                             initialLines={this.state.lines}
                         />
                     </View>
-                    <View style={styles.result}>
-                        {(() => {
-                            if (!this.state.model) {
-                                return <Text style={styles.resultContextText}>Chargement..</Text>
-                            }
-                            if (this.state.thinking) {
-                                return <Text style={styles.resultContextText}>Voyons voir...</Text>
-                            } else if (this.state.prediction) {
-                                return <>
-                                    <Text style={styles.resultContextText}>Je vois :</Text>
-                                    <Text style={styles.resultText}>{`${this.state.prediction}`}</Text>
-                                </>
-                            } else {
-                                return null
-                            }
-                        })()}
-
-                    </View>
+                </View>
+                <View style={styles.result}>
+                    {(() => {
+                        if (!this.state.model) {
+                            return <Text style={styles.resultContextText}>Chargement...</Text>
+                        }
+                        if (this.state.thinking) {
+                            return <Text style={styles.resultContextText}>Voyons voir...</Text>
+                        } else if (this.state.prediction) {
+                            return <>
+                                <Text style={styles.resultContextText}>Je vois :</Text>
+                                <Text style={styles.resultText}>{`${this.state.prediction}`}</Text>
+                            </>
+                        } else {
+                            return null
+                        }
+                    })()}
                 </View>
                 <Button
                     color={Colors.VertLogo}
@@ -171,7 +169,7 @@ const styles = StyleSheet.create({
     result: {
         flex: 1,
         alignItems: "center",
-
+        paddingTop: 50
     },
     resultContextText: {
         fontWeight: 'bold',
