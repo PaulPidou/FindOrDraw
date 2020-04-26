@@ -15,11 +15,10 @@ export async function predictFromDraw(sortedRGBPixels, width, height){
     const image = tf.browser.fromPixels({data: Uint8Array.from(sortedRGBPixels), width: width, height: height})
 
     const scaledImage = tf.tidy(() => {
-        //const image = tf.tensor(pixels).reshape([img.height, img.width, 4])
         const grayScaleImg = tf.max(image, 2).expandDims(2)
         const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
         const batchedImage = resizedImage.expandDims(0)
-        return batchedImage.toFloat().div(tf.scalar(255))
+        return batchedImage.toFloat().div(tf.scalar(127.5)).sub(tf.scalar(1))
     });
 
     if (model) {

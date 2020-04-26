@@ -1,5 +1,5 @@
 export function transposeAndApplyAlpha(bottomFirstLTRPixels, width, height){
-    // Rotate the Image, the screen need data in a bottom to top order column by colums
+    // Rotate the Image, the screen need data in a bottom to top order column by columns
     // We will also remove the alpha layer by applying the color over a black backend
     const RGBBackground = [0, 0, 0]
     const rotatedRGBdata = []

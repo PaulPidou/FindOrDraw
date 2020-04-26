@@ -57,9 +57,6 @@ export default class DrawingScreen extends Component {
         AppState.removeEventListener('change', this.handleAppStateChangeAsync);
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-    }
-
     onChangeAsync = async () => {
         this.setState({thinking: true})
         const img = await this.sketch.takeSnapshotAsync({format: 'png'});
