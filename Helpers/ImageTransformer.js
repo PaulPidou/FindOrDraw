@@ -13,7 +13,6 @@ export function transposeAndApplyAlpha(bottomFirstLTRPixels, width, height){
             rotatedRGBdata.push((1 - alpha) * RGBBackground[1] + alpha * (255-bottomFirstLTRPixels[firstByteOfPixel + 1]))
             // B
             rotatedRGBdata.push((1 - alpha) * RGBBackground[2] + alpha * (255-bottomFirstLTRPixels[firstByteOfPixel + 2]))
-
         }
     }
     return rotatedRGBdata

@@ -12,7 +12,7 @@ export async function loadModel(){
 }
 
 export async function predictFromDraw(sortedRGBPixels, width, height){
-    const image = tf.browser.fromPixels({data: Uint8Array.from(sortedRGBPixels), width: width, height: height})
+    const image = tf.tensor(sortedRGBPixels).reshape([width, height, 3])
 
     const scaledImage = tf.tidy(() => {
         const grayScaleImg = tf.max(image, 2).expandDims(2)

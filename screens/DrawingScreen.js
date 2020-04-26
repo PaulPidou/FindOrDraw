@@ -1,10 +1,7 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
 import {Dimensions, Button, Platform, AppState, StyleSheet, View, Image, StatusBar} from 'react-native';
-import * as tf from '@tensorflow/tfjs';
-import {bundleResourceIO} from '@tensorflow/tfjs-react-native';
 
-import QUICKDRAW_CLASSES from '../assets/model/quickdraw_classes.json'
 import Constants from "expo-constants";
 import * as Colors from "./Constants/Constants";
 import Text from "../Components/Text";
@@ -61,8 +58,8 @@ export default class DrawingScreen extends Component {
         this.setState({thinking: true})
         const img = await this.sketch.takeSnapshotAsync({format: 'png'});
         const pixels = this.sketch.renderer.extract.pixels()
-        const normalizedRGBPixels = transposeAndApplyAlpha(pixels, img.width, img.height)
 
+        const normalizedRGBPixels = transposeAndApplyAlpha(pixels, img.width, img.height)
         const prediction = await predictFromDraw(normalizedRGBPixels, img.width, img.height)
 
         this.setState({
