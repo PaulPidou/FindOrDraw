@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Button, StatusBar, Image} from 'react-native';
-import * as Colors from "./Constants/Constants";
 import Constants from "expo-constants";
 
+import * as Colors from "../constants/Constants";
 import logo_bleu from "../assets/logo_transparent_vert.png"
 
 export default class HomeScreen extends Component {

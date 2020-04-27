@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from "../screens/HomeScreen";
 import DrawingScreen from "../screens/DrawingScreen";

@@ -1,12 +1,12 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
 import {Dimensions, Button, Platform, AppState, StyleSheet, View, StatusBar} from 'react-native';
-
 import Constants from "expo-constants";
-import * as Colors from "./Constants/Constants";
-import Text from "../Components/Text";
-import {transposeAndApplyAlpha} from "../Helpers/ImageTransformer";
-import {loadModel, predictFromDraw} from "../Helpers/Prediction";
+
+import * as Colors from "../constants/Constants";
+import Text from "../components/Text";
+import {transposeAndApplyAlpha} from "../helpers/ImageTransformer";
+import {loadModel, predictFromDraw} from "../helpers/Prediction";
 
 const isAndroid = Platform.OS === 'android';
 
