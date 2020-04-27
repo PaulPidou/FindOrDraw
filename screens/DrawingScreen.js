@@ -1,6 +1,7 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
-import {Dimensions, Button, Platform, AppState, StyleSheet, View, StatusBar} from 'react-native';
+import {Dimensions, Platform, AppState, StyleSheet, View, StatusBar} from 'react-native';
+import {Button} from 'native-base'
 import Constants from "expo-constants";
 
 import * as Colors from "../constants/Constants";
@@ -54,13 +55,20 @@ export default class DrawingScreen extends Component {
         AppState.removeEventListener('change', this.handleAppStateChangeAsync);
     }
 
+    clearSketch() {
+        if (this.sketch.stage.children.length > 0) {
+            this.sketch.stage.removeChildren();
+            this.sketch.renderer._update();
+        }
+    }
+
     onChangeAsync = async () => {
         this.setState({thinking: true})
-        const img = await this.sketch.takeSnapshotAsync({format: 'png'})
         const pixels = this.sketch.renderer.extract.pixels()
+        const length = Math.sqrt(pixels.length / 4)
 
-        const normalizedRGBPixels = transposeAndApplyAlpha(pixels, img.width, img.height)
-        const prediction = await predictFromDraw(normalizedRGBPixels, img.width, img.height)
+        const normalizedRGBPixels = transposeAndApplyAlpha(pixels, length, length)
+        const prediction = await predictFromDraw(normalizedRGBPixels, length, length)
 
         this.setState({
             prediction,
@@ -92,34 +100,32 @@ export default class DrawingScreen extends Component {
                 <View style={styles.result}>
                     {(() => {
                         if (!this.state.ready) {
-                            return <Text style={styles.resultContextText}>Chargement...</Text>
+                            return <Text style={styles.resultContextText}>Loading...</Text>
                         }
                         if (this.state.thinking) {
-                            return <Text style={styles.resultContextText}>Voyons voir...</Text>
+                            return <Text style={styles.resultContextText}>Let's see...</Text>
                         } else if (this.state.prediction) {
                             return <>
-                                <Text style={styles.resultContextText}>Je vois :</Text>
+                                <Text style={styles.resultContextText}>I see:</Text>
                                 <Text style={styles.resultText}>{`${this.state.prediction}`}</Text>
                             </>
                         } else {
                             return null
                         }
                     })()}
-                    <Button
-                        title={'Recharger'}
-                        onPress={() => {
-                            this.onChangeAsync()
-                        }}
-                    />
                 </View>
-                <Button
-                    color={Colors.VertLogo}
-                    title="undo"
-                    style={styles.button}
-                    onPress={() => {
-                        this.sketch.undo();
-                    }}
-                />
+                <View style={{ flexDirection: 'row' }}>
+                    <Button full
+                        style={styles.button}
+                        onPress={() => {this.sketch.undo();}}>
+                        <Text>UNDO</Text>
+                    </Button>
+                    <Button full
+                        style={styles.button}
+                        onPress={() => {this.clearSketch();}}>
+                        <Text>CLEAR</Text>
+                    </Button>
+                </View>
             </View>
         );
     }
@@ -150,7 +156,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: Dimensions.get('window').width - 120,
         height: Dimensions.get('window').width - 120,
-
     },
     result: {
         flex: 1,
@@ -166,11 +171,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 70,
     },
-    image: {
-        flex: 1,
-        resizeMode: 'contain'
-    },
-    imageContainer: {},
     label: {
         width: '100%',
         padding: 5,
@@ -178,8 +178,9 @@ const styles = StyleSheet.create({
     },
     button: {
         zIndex: 1,
-        padding: 15,
-        minWidth: 56,
-        minHeight: 48,
+        flex: 1,
+        backgroundColor: Colors.VertLogo,
+        borderColor: '#fff',
+        borderWidth: 0.2
     },
 });

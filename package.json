@@ -16,6 +16,7 @@
     "expo": "~37.0.3",
     "expo-camera": "~8.2.0",
     "expo-constants": "^9.0.0",
+    "expo-font": "~8.1.0",
     "expo-gl": "~8.1.0",
     "expo-pixi": "^1.2.0",
     "native-base": "^2.13.12",
