@@ -1,16 +1,20 @@
 import {
 
-} from "../actions/GameActions";
-import {RESET_TIMER} from "../actions/GameActions";
-import {SET_TIMER} from "../actions/GameActions";
-import {TICK_TIMER} from "../actions/GameActions";
+} from "../actions/TimerActions";
+import {RESET_TIMER} from "../actions/TimerActions";
+import {SET_TIMER} from "../actions/TimerActions";
+import {TICK_TIMER} from "../actions/TimerActions";
 import {stat} from "react-native-fs";
-import {TIMER_DONE} from "../actions/GameActions";
+import {TIMER_DONE} from "../actions/TimerActions";
 
 const initialState = {
     timerId: null,
     timerTime: null,
     timerIsDone: false,
+
+    gameRunning: false,
+    gameMode: null,
+
 }
 
 export default function myReducer(state = initialState, action) {
