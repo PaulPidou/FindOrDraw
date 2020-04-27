@@ -18,6 +18,12 @@ export default class HomeScreen extends Component {
                         color={Colors.VertLogo}
                         onPress={() => this.props.navigation.navigate('Draw')}
                     />
+                    <Button
+                        style={styles.button}
+                        title="Let's capture"
+                        color={Colors.VertLogo}
+                        onPress={() => this.props.navigation.navigate('Find')}
+                    />
                 </View>
             </View>)
     }
@@ -37,10 +43,11 @@ const styles = StyleSheet.create({
         marginVertical: 30
     },
     menu: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'stretch'
+        flex: 2,
+        justifyContent: 'space-around',
+        alignItems: 'stretch',
     },
     button: {
+        flex: 1
     }
 });

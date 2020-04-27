@@ -20,7 +20,7 @@ function uuidv4() {
     });
 }
 
-export default class DrawingScreen extends Component {
+export default class DrawScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
