@@ -24,7 +24,7 @@ class StateLoader {
         try {
             let importantState = {
                 //Things to save
-                ...state
+                persist: state.persist
             }
             let serializedState = JSON.stringify(importantState)
             await AsyncStorage.setItem(StateLoader.storageKey, serializedState)

@@ -4,6 +4,7 @@ import {getReduxStore} from "../storeInit";
 export const SET_TIMER = 'game/set_timer';
 export const RESET_TIMER = 'game/reset_timer';
 export const TICK_TIMER = 'game/tick_timer';
+export const TIMER_DONE = 'game/timer_done';
 
 export function setTimer(seconds) {
     return (dispatch) => {
@@ -19,7 +20,7 @@ export function setTimer(seconds) {
             const state = getReduxStore();
             if (state.game.timerTime <= 0) {
                 clearInterval(state.game.timerId)
-                dispatch({type: RESET_TIMER})
+                dispatch({type: TIMER_DONE})
             }
         }, 1000)
 
