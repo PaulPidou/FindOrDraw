@@ -15,7 +15,7 @@ export function markTfAsReady() {
 
 
 export function startGame() {
-
+    return {type: SET_GAME_STATUS, payload: "started"}
 }
 
 export function stopGame() {

@@ -71,7 +71,7 @@ class UnconnectedAppNavigator extends Component {
 function maStateToProps(state) {
     return {
         isGameRunning: state.game.gameRunning,
-        gameMode: state.game.gameMode
+        gameMode: state.game.gameMode,
     }
 }
 
