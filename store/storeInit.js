@@ -25,7 +25,9 @@ export async function initStore(){
 
 
 export const getStore = function () {
-    return store.getState()
+    if(store){
+        return store.getState()
+    }
 }
 
 export const getReduxStore = function () {

@@ -20,7 +20,7 @@ class UnconnectedAppNavigator extends Component {
 
     static propTypes = {
         gameMode: PropTypes.string,
-        isGameRunning: PropTypes.boolean,
+        isGameRunning: PropTypes.bool,
         markTfAsReady : PropTypes.func,
         markModelAsReady : PropTypes.func,
     }

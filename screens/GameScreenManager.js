@@ -19,6 +19,10 @@ class UGameScreenManager extends Component {
         this.props.startGame()
     }
 
+    componentWillUnmount() {
+        this.props.endGame()
+    }
+
     static gameStep = {
         "menu": <MenuScreen/>,
         "pick": <PickScreen/>,
@@ -54,6 +58,7 @@ function mapActionToProps(dispatch) {
     return {
         startGame: bindActionCreators(GameActions.startGame, dispatch),
         moveGameStep: bindActionCreators(GameActions.moveGameStep, dispatch),
+        endGame: bindActionCreators(GameActions.stopGame, dispatch)
     }
 }
 

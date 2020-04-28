@@ -5,7 +5,7 @@ import Constants from "expo-constants";
 import * as Colors from "../../constants/Constants";
 import Text from "../../components/Text";
 import {connect} from "react-redux";
-import {moveGameStep} from "../../store/actions/GameActions";
+import {moveGameStep, resetGame} from "../../store/actions/GameActions";
 import GameSteps from "../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
 import {bindActionCreators} from "redux";
@@ -30,8 +30,8 @@ class UPickScreen extends Component {
                         this.props.moveGameStep(GameSteps.FIND)
                     }}/>
 
-                    <Button title={'Reset la partie'} style={styles.menuEntry} onPress={() => {
-                        this.props.moveGameStep(GameSteps.MENU)
+                    <Button title={'Reset la partie'} color="red" style={styles.menuEntry} onPress={() => {
+                        this.props.resetGame()
                     }}/>
                 </View>
             </View>)
@@ -41,6 +41,7 @@ class UPickScreen extends Component {
 function mapActionToProps(dispatch) {
     return {
         moveGameStep: bindActionCreators(moveGameStep, dispatch),
+        resetGame: bindActionCreators(resetGame, dispatch),
     }
 }
 

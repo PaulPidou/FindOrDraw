@@ -1,5 +1,5 @@
 import GameSteps from "../../helpers/GameSteps";
-import {RESET_TIMER, setTimer} from "./TimerActions";
+import {RESET_TIMER, resetTimer, setTimer} from "./TimerActions";
 import {getStore} from "../storeInit";
 
 export const SET_TF_READY = 'game/tf_ready';
@@ -17,7 +17,6 @@ export function markTfAsReady() {
     return {type: SET_TF_READY}
 }
 
-
 export function startGame() {
     return (dispatch) => {
         dispatch({type: SET_GAME_STATUS, payload: true})
@@ -27,9 +26,16 @@ export function startGame() {
 
 export function stopGame() {
     return (dispatch) => {
+        dispatch(resetTimer())
         dispatch({type: SET_GAME_STATUS, payload: false})
         dispatch({type: SET_GAME_STEP, payload: null})
-        dispatch({type: RESET_TIMER})
+    }
+}
+
+export function resetGame() {
+    return (dispatch) => {
+        dispatch(resetTimer())
+        dispatch({type: SET_GAME_STEP, payload: GameSteps.MENU})
     }
 }
 
@@ -37,10 +43,8 @@ export function moveGameStep(step) {
     return (dispatch) => {
         const state = getStore()
         const currentStep = state.game.gameStep
-        console.warn("Move")
         if(currentStep === GameSteps.MENU && step === GameSteps.PICK){
-            console.warn('Timer started')
-            setTimer(3000)(dispatch)
+            setTimer(3 * 60)(dispatch)
         }
         dispatch({type: SET_GAME_STEP, payload: step})
     }

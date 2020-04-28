@@ -27,7 +27,8 @@ function uuidv4() {
 class UDrawScreen extends Component {
 
     static propTypes = {
-        moveGameStep: PropTypes.func
+        moveGameStep: PropTypes.func,
+        isModelReady: PropTypes.bool
     }
 
     constructor(props) {
@@ -39,7 +40,6 @@ class UDrawScreen extends Component {
             lines: [],
             prediction: null,
             appState: AppState.currentState,
-            ready: false,
             thinking: false
         };
     }
@@ -106,7 +106,7 @@ class UDrawScreen extends Component {
                 </View>
                 <View style={GenericStyles.result}>
                     {(() => {
-                        if (!this.state.ready) {
+                        if (!this.props.isModelReady) {
                             return <Text style={GenericStyles.resultContextText}>Loading...</Text>
                         }
                         if (this.state.thinking) {
@@ -141,6 +141,12 @@ class UDrawScreen extends Component {
 
             </View>
         );
+    }
+}
+
+function mapStateToProps(state){
+    return {
+        isModelReady : state.game.modelReady
     }
 }
 
