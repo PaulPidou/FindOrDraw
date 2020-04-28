@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Text from "../components/Text";
-import {View} from "react-native-reanimated";
+import {View} from "react-native";
 
 
 export default class GameScreenManager extends Component{

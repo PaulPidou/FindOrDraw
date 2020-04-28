@@ -7,7 +7,7 @@ import Constants from "expo-constants";
 import * as Colors from "../constants/Constants";
 import Text from "../components/Text";
 import {transposeAndApplyAlpha} from "../helpers/ImageTransformer";
-import {loadModel, predictFromDraw} from "../helpers/Prediction";
+import {predictFromDraw} from "../helpers/Prediction";
 
 const isAndroid = Platform.OS === 'android';
 

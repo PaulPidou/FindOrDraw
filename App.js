@@ -2,26 +2,23 @@ import React, {Component} from 'react';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 import AppNavigator from "./navigation/AppNavigator";
-import {Provider} from "react-redux"
-import {getReduxStore} from "./store/storeInit";
-import {StyleProvider} from "native-base";
+import {connect, Provider} from "react-redux"
+import {getReduxStore, initStore} from "./store/storeInit";
 import {AppLoading} from 'expo';
+import {Ionicons} from '@expo/vector-icons';
+import * as Font from 'expo-font';
+import {bindActionCreators} from "redux";
+import * as GameActions from './store/actions/GameActions'
+import * as PropTypes from "prop-types";
+
 
 export default class App extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            isTfReady: false,
+            isLoadingComplete: false,
         };
-    }
-
-    async componentDidMount() {
-        // Wait for tf to be ready.
-        await tf.ready();
-        // Signal to the app that tensorflow.js can now be used.
-        this.setState({
-            isTfReady: true,
-        });
     }
 
     _loadResourcesAsync = async () => {
@@ -49,11 +46,13 @@ export default class App extends Component {
     render() {
         if (!this.state.isLoadingComplete) {
             return (
-                <AppLoading
-                    startAsync={this._loadResourcesAsync}
-                    onError={this._handleLoadingError}
-                    onFinish={this._handleFinishLoading}
-                />
+                <>
+                    <AppLoading
+                        startAsync={this._loadResourcesAsync}
+                        onError={this._handleLoadingError}
+                        onFinish={this._handleFinishLoading}
+                    />
+                </>
             )
         } else {
             return (
@@ -64,3 +63,5 @@ export default class App extends Component {
         }
     }
 }
+
+
