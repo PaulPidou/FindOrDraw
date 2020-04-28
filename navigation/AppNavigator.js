@@ -5,8 +5,8 @@ import * as PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 import HomeScreen from "../screens/HomeScreen";
-import DrawScreen from "../screens/DrawScreen";
-import FindScreen from "../screens/FindScreen";
+import DrawScreen from "../screens/gamePhases/DrawScreen";
+import FindScreen from "../screens/gamePhases/FindScreen";
 import RulesScreen from "../screens/RulesScreen";
 import GameScreenManager from "../screens/GameScreenManager";
 import {bindActionCreators} from "redux";
@@ -58,7 +58,7 @@ class UnconnectedAppNavigator extends Component {
             <NavigationContainer>
                 <Stack.Navigator initialRouteName="Home" headerMode={'none'}>
                     {
-                        !this.props.isGameRunning
+                        !this.props.gameStatus
                             && this.renderMenu()
                     }
                     <Stack.Screen name="Game" component={GameScreenManager}/>
@@ -70,8 +70,8 @@ class UnconnectedAppNavigator extends Component {
 
 function maStateToProps(state) {
     return {
-        isGameRunning: state.game.gameRunning,
-        gameMode: state.game.gameMode,
+        gameStatus: state.game.gameStatus,
+        gameMode: state.game.gameStep,
     }
 }
 

@@ -5,19 +5,18 @@ import {RESET_TIMER} from "../actions/TimerActions";
 import {SET_TIMER} from "../actions/TimerActions";
 import {TICK_TIMER} from "../actions/TimerActions";
 import {TIMER_DONE} from "../actions/TimerActions";
-import {SET_GAME_STATUS, SET_MODEL_READY, SET_TF_READY} from "../actions/GameActions";
+import {SET_GAME_STATUS, SET_GAME_STEP, SET_MODEL_READY, SET_TF_READY} from "../actions/GameActions";
 
 const initialState = {
     timerId: null,
     timerTime: null,
     timerIsDone: false,
 
-    gameRunning: false,
-    gameMode: null,
-
     tfReady: false,
     modelReady: false,
 
+    gameStatus: false,
+    gameStep: null,
 }
 
 export default function myReducer(state = initialState, action) {
@@ -30,12 +29,17 @@ export default function myReducer(state = initialState, action) {
             return {...state, timerTime: state.timerTime - 1}
         case TIMER_DONE:
             return {...state, timerId: null, timerTime: null, timerIsDone: true }
+
         case SET_TF_READY:
             return {...state, tfReady: true }
         case SET_MODEL_READY:
             return {...state, modelReady: true }
+
+        case SET_GAME_STEP:
+            return {...state, gameStep: action.payload }
         case SET_GAME_STATUS:
-            return {...state, gameMode: "started", gameRunning: true }
+            return {...state, gameStatus: action.payload }
+
         default:
             return state
     }

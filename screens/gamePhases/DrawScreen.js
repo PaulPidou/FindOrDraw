@@ -3,10 +3,15 @@ import React, {Component} from 'react';
 import {Platform, AppState, View, StatusBar} from 'react-native';
 import {Button} from 'native-base'
 
-import Text from "../components/Text";
-import GenericStyles from "../constants/Style";
-import {transposeAndApplyAlpha} from "../helpers/ImageTransformer";
-import {predictFromDraw} from "../helpers/Prediction";
+import Text from "../../components/Text";
+import GenericStyles from "../../constants/Style";
+import {transposeAndApplyAlpha} from "../../helpers/ImageTransformer";
+import {predictFromDraw} from "../../helpers/Prediction";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as GameActions from "../../store/actions/GameActions";
+import GameSteps from "../../helpers/GameSteps";
+import * as PropTypes from "prop-types";
 
 const isAndroid = Platform.OS === 'android';
 
@@ -19,7 +24,12 @@ function uuidv4() {
     });
 }
 
-export default class DrawScreen extends Component {
+class UDrawScreen extends Component {
+
+    static propTypes = {
+        moveGameStep: PropTypes.func
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -46,8 +56,6 @@ export default class DrawScreen extends Component {
 
     async componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChangeAsync);
-        await loadModel()
-        this.setState({ready: true})
     }
 
     componentWillUnmount() {
@@ -124,8 +132,23 @@ export default class DrawScreen extends Component {
                         onPress={() => {this.clearSketch();}}>
                         <Text>CLEAR</Text>
                     </Button>
+                    <Button full
+                            style={GenericStyles.button}
+                            onPress={() => {this.props.moveGameStep(GameSteps.PICK)}}>
+                        <Text>OK</Text>
+                    </Button>
                 </View>
+
             </View>
         );
     }
 }
+
+function mapActionToProps(dispatch) {
+    return {
+        moveGameStep: bindActionCreators(GameActions.moveGameStep, dispatch),
+    }
+}
+
+const DrawScreen = connect(null, mapActionToProps)(UDrawScreen);
+export default DrawScreen

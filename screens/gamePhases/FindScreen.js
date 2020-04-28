@@ -7,7 +7,13 @@ import { Camera } from 'expo-camera';
 import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import {cameraWithTensors} from '@tensorflow/tfjs-react-native';
-import GenericStyles from "../constants/Style";
+import GenericStyles from "../../constants/Style";
+import * as PropTypes from "prop-types";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import * as GameActions from "../../store/actions/GameActions";
+import GameSteps from "../../helpers/GameSteps";
+import {Button} from "native-base";
 
 const inputTensorWidth = 152;
 const inputTensorHeight = 200;
@@ -16,7 +22,12 @@ const AUTORENDER = true;
 
 const TensorCamera = cameraWithTensors(Camera);
 
-export default class FindScreen extends React.Component {
+class UFindScreen extends React.Component {
+
+    static propTypes = {
+        moveGameStep: PropTypes.func
+    }
+
     rafID
 
     constructor(props) {
@@ -123,8 +134,23 @@ export default class FindScreen extends React.Component {
                         }
                     })()}
                 </View>
+                <View>
+                    <Button full
+                            style={GenericStyles.button}
+                            onPress={() => {this.props.moveGameStep(GameSteps.PICK)}}>
+                        <Text>OK</Text>
+                    </Button>
+                </View>
             </View>
         );
     }
-
 }
+
+function mapActionToProps(dispatch) {
+    return {
+        moveGameStep: bindActionCreators(GameActions.moveGameStep, dispatch),
+    }
+}
+
+const FindScreen = connect(null,mapActionToProps)(UFindScreen);
+export default FindScreen

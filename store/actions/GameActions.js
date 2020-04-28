@@ -1,8 +1,12 @@
-export const SET_GAME_STATUS = 'game/set_game_status';
-export const SET_GAME_MODE = 'game/set_game_mode';
+import GameSteps from "../../helpers/GameSteps";
+import {RESET_TIMER, setTimer} from "./TimerActions";
+import {getStore} from "../storeInit";
 
-export const SET_TF_READY = 'game/tf_ready'
-export const SET_MODEL_READY= 'game/model_ready'
+export const SET_TF_READY = 'game/tf_ready';
+export const SET_MODEL_READY = 'game/model_ready';
+
+export const SET_GAME_STEP = 'game/step';
+export const SET_GAME_STATUS = 'game/status';
 
 
 export function markModelAsReady() {
@@ -15,13 +19,29 @@ export function markTfAsReady() {
 
 
 export function startGame() {
-    return {type: SET_GAME_STATUS, payload: "started"}
+    return (dispatch) => {
+        dispatch({type: SET_GAME_STATUS, payload: true})
+        dispatch({type: SET_GAME_STEP, payload: GameSteps.MENU})
+    }
 }
 
 export function stopGame() {
-
+    return (dispatch) => {
+        dispatch({type: SET_GAME_STATUS, payload: false})
+        dispatch({type: SET_GAME_STEP, payload: null})
+        dispatch({type: RESET_TIMER})
+    }
 }
 
-export function switchGameMode(gameMode) {
-    return {type: SET_GAME_MODE, payload: gameMode}
+export function moveGameStep(step) {
+    return (dispatch) => {
+        const state = getStore()
+        const currentStep = state.game.gameStep
+        console.warn("Move")
+        if(currentStep === GameSteps.MENU && step === GameSteps.PICK){
+            console.warn('Timer started')
+            setTimer(3000)(dispatch)
+        }
+        dispatch({type: SET_GAME_STEP, payload: step})
+    }
 }
