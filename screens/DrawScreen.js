@@ -62,7 +62,7 @@ export default class DrawScreen extends Component {
     }
 
     onChangeAsync = async () => {
-        this.setState({thinking: true})
+        this.setState({ thinking: true })
         const pixels = this.sketch.renderer.extract.pixels()
         const length = Math.sqrt(pixels.length / 4)
 
@@ -113,7 +113,7 @@ export default class DrawScreen extends Component {
                         }
                     })()}
                 </View>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
                     <Button full
                         style={GenericStyles.button}
                         onPress={() => {this.sketch.undo();}}>

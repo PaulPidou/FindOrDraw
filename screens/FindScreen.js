@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View, Platform, Text, StatusBar, Dimensions} from 'react-native';
+import {ActivityIndicator, View, Platform, Text, StatusBar, Dimensions} from 'react-native';
 
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
@@ -7,8 +7,7 @@ import { Camera } from 'expo-camera';
 import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import {cameraWithTensors} from '@tensorflow/tfjs-react-native';
-import * as Colors from "../constants/Constants";
-import Constants from "expo-constants";
+import GenericStyles from "../constants/Style";
 
 const inputTensorWidth = 152;
 const inputTensorHeight = 200;
@@ -64,9 +63,7 @@ export default class FindScreen extends React.Component {
 
     async componentDidMount() {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
-
-        const [mobilenetModel] =
-            await Promise.all([this.loadMobilenetModel()]);
+        const mobilenetModel = await this.loadMobilenetModel();
 
         this.setState({
             hasCameraPermission: status === 'granted',
@@ -93,10 +90,10 @@ export default class FindScreen extends React.Component {
             };
         }
 
-        const camView = <View>
+        const camView = <View style={GenericStyles.gameZone}>
             <TensorCamera
                 // Standard Camera props
-                style={styles.camera}
+                style={GenericStyles.camera}
                 type={this.state.cameraType}
                 zoom={0}
                 // tensor related props
@@ -111,36 +108,23 @@ export default class FindScreen extends React.Component {
         </View>;
 
         return (
-            <View style={styles.container}>
+            <View style={GenericStyles.container}>
                 <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
-                {isLoading ? <View style={[styles.loadingIndicator]}>
-                    <ActivityIndicator size='large' color='#FF0266' />
-                </View> : camView}
-                {
-                    this.state.results.length > 0 && (
-                        <View style={{flex: 1}}>
-                            <Text style={{color: "#fff"}}>{this.state.results[0].className}</Text>
-                        </View>
-                    )
-                }
+                <View>
+                    <Text style={GenericStyles.title}>Find a LABEL</Text>
+                </View>
+                {isLoading ? <ActivityIndicator size='large' color='#FF0266' /> : camView}
+                <View style={GenericStyles.result}>
+                    {(() => {
+                        if (this.state.results.length > 0) {
+                            return (<Text style={{color: "#fff"}}>{this.state.results[0].className}</Text>)
+                        } else {
+                            return null
+                        }
+                    })()}
+                </View>
             </View>
         );
     }
 
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.BackgroundColor,
-        paddingTop: Constants.statusBarHeight,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    camera : {
-        //width: 600/2,
-        //height: 800/2,
-        width: Dimensions.get('window').width - 120,
-        height: Dimensions.get('window').width - 120,
-    }
-});

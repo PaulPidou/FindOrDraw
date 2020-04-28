@@ -3,8 +3,12 @@ import * as Colors from "./Constants";
 import Constants from "expo-constants";
 
 const GenericStyles = StyleSheet.create({
-    gameZone: {
+    container: {
         flex: 1,
+        backgroundColor: Colors.BackgroundColor,
+        paddingTop: Constants.statusBarHeight
+    },
+    gameZone: {
         alignItems: 'center',
         padding: 30
     },
@@ -13,29 +17,25 @@ const GenericStyles = StyleSheet.create({
         fontSize: 30,
         width: '100%',
         paddingVertical: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: "#fff"
     },
-    container: {
-        flex: 1,
-        backgroundColor: Colors.BackgroundColor,
-        paddingTop: Constants.statusBarHeight
-    },
-    sketchContainer: {
-        flex: 1
-    },
+    sketchContainer: {},
     sketch: {
         backgroundColor: '#fff',
         width: Dimensions.get('window').width - 120,
         height: Dimensions.get('window').width - 120,
     },
+    camera : {
+        width: 600/2,
+        height: 800/2,
+    },
     result: {
-        flex: 1,
-        alignItems: "center",
-        paddingTop: 50
+        alignItems: "center"
     },
     resultContextText: {
         fontWeight: 'bold',
-        fontSize: 50,
+        fontSize: 30,
         paddingBottom: 20
     },
     resultText: {
@@ -47,7 +47,7 @@ const GenericStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: Colors.VertLogo,
         borderColor: '#fff',
-        borderWidth: 0.2
+        borderWidth: 0.2,
     },
 });
 
