@@ -1,11 +1,10 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
-import {Dimensions, Platform, AppState, StyleSheet, View, StatusBar} from 'react-native';
+import {Platform, AppState, View, StatusBar} from 'react-native';
 import {Button} from 'native-base'
-import Constants from "expo-constants";
 
-import * as Colors from "../constants/Constants";
 import Text from "../components/Text";
+import GenericStyles from "../constants/Style";
 import {transposeAndApplyAlpha} from "../helpers/ImageTransformer";
 import {loadModel, predictFromDraw} from "../helpers/Prediction";
 
@@ -78,16 +77,16 @@ export default class DrawScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={GenericStyles.container}>
                 <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <View>
-                    <Text style={styles.title}>Draw me something !</Text>
+                    <Text style={GenericStyles.title}>Draw me something !</Text>
                 </View>
-                <View style={styles.gameZone}>
-                    <View style={styles.sketchContainer}>
+                <View style={GenericStyles.gameZone}>
+                    <View style={GenericStyles.sketchContainer}>
                         <ExpoPixi.Sketch
                             ref={ref => (this.sketch = ref)}
-                            style={styles.sketch}
+                            style={GenericStyles.sketch}
                             strokeColor={this.state.strokeColor}
                             strokeWidth={this.state.strokeWidth}
                             strokeAlpha={1}
@@ -97,17 +96,17 @@ export default class DrawScreen extends Component {
                         />
                     </View>
                 </View>
-                <View style={styles.result}>
+                <View style={GenericStyles.result}>
                     {(() => {
                         if (!this.state.ready) {
-                            return <Text style={styles.resultContextText}>Loading...</Text>
+                            return <Text style={GenericStyles.resultContextText}>Loading...</Text>
                         }
                         if (this.state.thinking) {
-                            return <Text style={styles.resultContextText}>Let's see...</Text>
+                            return <Text style={GenericStyles.resultContextText}>Let's see...</Text>
                         } else if (this.state.prediction) {
                             return <>
-                                <Text style={styles.resultContextText}>I see:</Text>
-                                <Text style={styles.resultText}>{`${this.state.prediction}`}</Text>
+                                <Text style={GenericStyles.resultContextText}>I see:</Text>
+                                <Text style={GenericStyles.resultText}>{`${this.state.prediction}`}</Text>
                             </>
                         } else {
                             return null
@@ -116,12 +115,12 @@ export default class DrawScreen extends Component {
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <Button full
-                        style={styles.button}
+                        style={GenericStyles.button}
                         onPress={() => {this.sketch.undo();}}>
                         <Text>UNDO</Text>
                     </Button>
                     <Button full
-                        style={styles.button}
+                        style={GenericStyles.button}
                         onPress={() => {this.clearSketch();}}>
                         <Text>CLEAR</Text>
                     </Button>
@@ -130,57 +129,3 @@ export default class DrawScreen extends Component {
         );
     }
 }
-
-const styles = StyleSheet.create({
-    gameZone: {
-        flex: 1,
-        alignItems: 'center',
-        padding: 30
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 30,
-        width: '100%',
-        paddingVertical: 20,
-        textAlign: 'center'
-    },
-    container: {
-        flex: 1,
-        backgroundColor: Colors.BackgroundColor,
-        paddingTop: Constants.statusBarHeight
-    },
-    sketchContainer: {
-        flex: 1
-    },
-    sketch: {
-        backgroundColor: 'white',
-        width: Dimensions.get('window').width - 120,
-        height: Dimensions.get('window').width - 120,
-    },
-    result: {
-        flex: 1,
-        alignItems: "center",
-        paddingTop: 50
-    },
-    resultContextText: {
-        fontWeight: 'bold',
-        fontSize: 50,
-        paddingBottom: 20
-    },
-    resultText: {
-        fontWeight: 'bold',
-        fontSize: 70,
-    },
-    label: {
-        width: '100%',
-        padding: 5,
-        alignItems: 'center',
-    },
-    button: {
-        zIndex: 1,
-        flex: 1,
-        backgroundColor: Colors.VertLogo,
-        borderColor: '#fff',
-        borderWidth: 0.2
-    },
-});
