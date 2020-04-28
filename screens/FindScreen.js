@@ -1,5 +1,5 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, View, Platform, Text } from 'react-native';
+import {ActivityIndicator, StyleSheet, View, Platform, Text, StatusBar, Dimensions} from 'react-native';
 
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
@@ -7,6 +7,8 @@ import { Camera } from 'expo-camera';
 import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import {cameraWithTensors} from '@tensorflow/tfjs-react-native';
+import * as Colors from "../constants/Constants";
+import Constants from "expo-constants";
 
 const inputTensorWidth = 152;
 const inputTensorHeight = 200;
@@ -91,7 +93,7 @@ export default class FindScreen extends React.Component {
             };
         }
 
-        const camView = <View style={styles.cameraContainer}>
+        const camView = <View>
             <TensorCamera
                 // Standard Camera props
                 style={styles.camera}
@@ -109,14 +111,15 @@ export default class FindScreen extends React.Component {
         </View>;
 
         return (
-            <View style={{width:'100%'}}>
+            <View style={styles.container}>
+                <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 {isLoading ? <View style={[styles.loadingIndicator]}>
                     <ActivityIndicator size='large' color='#FF0266' />
                 </View> : camView}
                 {
                     this.state.results.length > 0 && (
                         <View style={{flex: 1}}>
-                            <Text>{this.state.results[0].className}</Text>
+                            <Text style={{color: "#fff"}}>{this.state.results[0].className}</Text>
                         </View>
                     )
                 }
@@ -127,32 +130,17 @@ export default class FindScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    loadingIndicator: {
-        zIndex: 200,
-    },
-    sectionContainer: {
-        marginTop: 32,
-        paddingHorizontal: 24,
-    },
-    cameraContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        //width: '100%',
-        //height: '100%',
+    container: {
         flex: 1,
-        backgroundColor: '#888',
+        backgroundColor: Colors.BackgroundColor,
+        paddingTop: Constants.statusBarHeight,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     camera : {
-        position:'absolute',
-        left: 50,
-        top: 100,
-        width: 600/2,
-        height: 800/2,
-        zIndex: 1,
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 0,
+        //width: 600/2,
+        //height: 800/2,
+        width: Dimensions.get('window').width - 120,
+        height: Dimensions.get('window').width - 120,
     }
 });
