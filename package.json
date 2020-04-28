@@ -11,8 +11,7 @@
     "@react-native-community/masked-view": "0.1.6",
     "@react-navigation/native": "^5.1.6",
     "@react-navigation/stack": "^5.2.13",
-    "@tensorflow-models/blazeface": "^0.0.5",
-    "@tensorflow-models/posenet": "^2.2.1",
+    "@tensorflow-models/mobilenet": "^2.0.4",
     "@tensorflow/tfjs": "^1.7.3",
     "@tensorflow/tfjs-react-native": "^0.2.3",
     "expo": "~37.0.3",
@@ -30,7 +29,6 @@
     "react-native-reanimated": "~1.7.0",
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
-    "react-native-svg": "11.0.1",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
