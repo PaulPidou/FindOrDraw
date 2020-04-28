@@ -1,37 +1,39 @@
-import {AsyncStorage} from 'react-native';
+// import {AsyncStorage} from 'react-native';
 
 class StateLoader {
 
-    static storageKey = `wheretobeg:state`
+    static storageKey = `findordraw:state`
 
     async loadState() {
-        try {
+        return this.initializeState()
 
-            let serializedState = await AsyncStorage.getItem(StateLoader.storageKey)
-            if (serializedState === null) {
-                return this.initializeState()
-            }
-
-            return JSON.parse(serializedState)
-        }
-        catch (err) {
-            console.error(err)
-            return this.initializeState()
-        }
+        // try {
+        //
+        //     let serializedState = await AsyncStorage.getItem(StateLoader.storageKey)
+        //     if (serializedState === null) {
+        //         return this.initializeState()
+        //     }
+        //
+        //     return JSON.parse(serializedState)
+        // }
+        // catch (err) {
+        //     console.error(err)
+        //     return this.initializeState()
+        // }
     }
 
     async saveState(state) {
-        try {
-            let importantState = {
-                //Things to save
-                ...state
-            }
-            let serializedState = JSON.stringify(importantState)
-            await AsyncStorage.setItem(StateLoader.storageKey, serializedState)
-        }
-        catch (err) {
-            console.error('Error while saving into localstorage')
-        }
+        // try {
+        //     let importantState = {
+        //         //Things to save
+        //         persist: state.persist
+        //     }
+        //     let serializedState = JSON.stringify(importantState)
+        //     await AsyncStorage.setItem(StateLoader.storageKey, serializedState)
+        // }
+        // catch (err) {
+        //     console.error('Error while saving into localstorage')
+        // }
     }
 
     initializeState() {

@@ -6,7 +6,7 @@ import {Button} from 'native-base'
 import Text from "../components/Text";
 import GenericStyles from "../constants/Style";
 import {transposeAndApplyAlpha} from "../helpers/ImageTransformer";
-import {loadModel, predictFromDraw} from "../helpers/Prediction";
+import {predictFromDraw} from "../helpers/Prediction";
 
 const isAndroid = Platform.OS === 'android';
 

@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux'
-import profileReducer from './profileReducer'
+import GameReducer from './GameReducer'
+import PersistentReducer from "./PersistentReducer";
 
 const rootReducer = combineReducers({
-    profile: profileReducer,
+    game: GameReducer,
+    persist: PersistentReducer,
 })
 
 export default rootReducer
