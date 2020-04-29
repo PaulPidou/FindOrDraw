@@ -120,7 +120,6 @@ class UFindScreen extends React.Component {
 
         return (
             <View style={GenericStyles.container}>
-                <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <View>
                     <Text style={GenericStyles.title}>Find a LABEL</Text>
                 </View>

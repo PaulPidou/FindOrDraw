@@ -10,7 +10,7 @@ export default class RulesScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
+                <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
 
                 <View>
                     <Text>Rules !</Text>

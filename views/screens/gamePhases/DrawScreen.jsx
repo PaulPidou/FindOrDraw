@@ -14,8 +14,6 @@ import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
 import {isAndroid, uuidv4} from "../../../helpers/Utils";
 
-import RnBgTask from "react-native-bg-thread";
-
 class UDrawScreen extends Component {
 
     static propTypes = {
@@ -67,7 +65,8 @@ class UDrawScreen extends Component {
         const pixels = this.sketch.renderer.extract.pixels()
         const length = Math.sqrt(pixels.length / 4)
 
-        const normalizedRGBPixels = transposeAndApplyAlpha(pixels, length, length)
+        console.warn(pixels.length)
+        const normalizedRGBPixels = await transposeAndApplyAlpha(pixels, length, length)
         const prediction = await predictFromDraw(normalizedRGBPixels, length, length)
 
         this.setState({prediction, thinking: false})
@@ -76,7 +75,6 @@ class UDrawScreen extends Component {
     render() {
         return (
             <View style={GenericStyles.container}>
-                <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <View>
                     <Text style={GenericStyles.title}>Draw me something !</Text>
                 </View>

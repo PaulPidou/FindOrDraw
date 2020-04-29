@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, StyleSheet, View} from "react-native";
+import {Button, StatusBar, StyleSheet, View} from "react-native";
 
 import MainContainer from "../components/MainContainer";
 import {bindActionCreators} from "redux";
@@ -12,6 +12,7 @@ import ScoresScreen from "./gamePhases/ScoresScreen";
 import MenuScreen from "./gamePhases/MenuScreen";
 import Text from "../components/Text";
 import Timer from "../components/Timer";
+import BarTimer from "../components/BarTimer";
 
 class UGameScreenManager extends Component {
 
@@ -36,16 +37,23 @@ class UGameScreenManager extends Component {
     }
 
     render() {
-        return <MainContainer>
-            <Text>{this.props.gameStep}</Text>
-            <Timer/>
+        return <MainContainer style={styles.container}>
+            <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
+            <BarTimer maxTime={3 * 60} />
             {this.renderGameStep()}
         </MainContainer>
     }
 }
 
 const styles = StyleSheet.create({
-
+    step: {
+        textAlign: "center",
+        fontWeight: "bold",
+        margin: 30
+    },
+    container: {
+        paddingHorizontal: 0
+    }
 })
 
 function mapStateToProps(state) {

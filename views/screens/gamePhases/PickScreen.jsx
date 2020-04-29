@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
-import Constants from "expo-constants";
-
-import * as Colors from "../../constants/Constants";
+import * as Constants from "../../constants/Constants"
 import Text from "../../components/Text";
 import {connect} from "react-redux";
 import {moveGameStep, resetGame} from "../../../store/actions/GameActions";
 import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
 import {bindActionCreators} from "redux";
+import PickButton from "../../components/PickButton";
 
 class UPickScreen extends Component {
 
@@ -20,20 +19,22 @@ class UPickScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View>
-                    <Text>PICK !</Text>
+                <Text style={styles.mainTitle}>Pick !</Text>
 
-                    <Button title={'Draw'} style={styles.menuEntry} onPress={() => {
+                <View style={styles.picker}>
+                    <PickButton type={GameSteps.DRAW} value={'Chameau'} style={styles.menuEntry} onPress={() => {
                         this.props.moveGameStep(GameSteps.DRAW)
                     }}/>
-                    <Button title={'Find'} style={styles.menuEntry} onPress={() => {
+                    <View style={styles.splitter}/>
+                    <PickButton type={GameSteps.FIND} value={'Helicoptère'} onPress={() => {
                         this.props.moveGameStep(GameSteps.FIND)
-                    }}/>
-
-                    <Button title={'Reset la partie'} color="red" style={styles.menuEntry} onPress={() => {
-                        this.props.resetGame()
-                    }}/>
+                    }}
+                    mode
+                    />
                 </View>
+                <Button title={'Reset la partie'} color="red" style={styles.menuEntry} onPress={() => {
+                    this.props.resetGame()
+                }}/>
             </View>)
     }
 }
@@ -51,11 +52,24 @@ export default PickScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: Colors.BackgroundColor,
         justifyContent: 'flex-start',
         alignItems: 'stretch',
-        paddingTop: Constants.statusBarHeight,
-        paddingHorizontal: 20
     },
-
+    mainTitle: {
+        textAlign: "center",
+        fontSize: 70,
+        padding: 10,
+        marginTop: 30,
+    },
+    picker: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingHorizontal: 50,
+        fontWeight: "800"
+    },
+    splitter: {
+        marginVertical: 20,
+        height: 1,
+        backgroundColor: Constants.ContrastColorPrimary,
+    },
 });

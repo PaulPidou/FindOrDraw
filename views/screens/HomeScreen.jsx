@@ -18,7 +18,7 @@ class UHomeScreen extends Component {
     render() {
         return (
             <MainContainer>
-                <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
+                <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <Image style={styles.logo} height={300} width={300} source={logo_bleu}/>
                 <View style={styles.menu}>
                     {this.props.tfReady ? <Text>TF Ready</Text> : <Text>Tf pas ready</Text>}
