@@ -5,14 +5,12 @@ import * as PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 import HomeScreen from "../screens/HomeScreen";
-import DrawScreen from "../screens/gamePhases/DrawScreen";
-import FindScreen from "../screens/gamePhases/FindScreen";
 import RulesScreen from "../screens/RulesScreen";
 import GameScreenManager from "../screens/GameScreenManager";
 import {bindActionCreators} from "redux";
 import * as GameActions from "../../store/actions/GameActions";
 import * as tf from "@tensorflow/tfjs";
-import {loadModel} from "../../helpers/Prediction";
+import {loadDrawModel, loadMobilenetModel} from "../../helpers/Prediction";
 
 const Stack = createStackNavigator();
 
@@ -34,15 +32,22 @@ class UnconnectedAppNavigator extends Component {
     }
 
     async loadDrawModel(){
-        await loadModel()
-        this.props.markModelAsReady()
+        await loadDrawModel()
+        this.props.markModelAsReady('DRAW')
+    }
+
+    async loadFindModel() {
+        await loadMobilenetModel()
+        this.props.markModelAsReady('FIND')
     }
 
     async componentDidMount() {
-            await this.initTf()
-            this.loadDrawModel()
+        await this.initTf()
+        Promise.all([
+            this.loadDrawModel(),
+            this.loadFindModel()
+        ])
     }
-
 
     renderMenu() {
         return <>

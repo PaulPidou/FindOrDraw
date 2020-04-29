@@ -148,7 +148,7 @@ class UDrawScreen extends Component {
 
 function mapStateToProps(state){
     return {
-        isModelReady : state.game.modelReady,
+        isModelReady : state.game.drawModelReady,
         drawElement: state.game.gameElement
     }
 }

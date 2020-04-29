@@ -10,8 +10,8 @@ export const SET_GAME_STATUS = 'game/status';
 export const SET_FINDORDRAWELEMENT = 'game/findordrawelement'
 
 
-export function markModelAsReady() {
-    return {type: SET_MODEL_READY}
+export function markModelAsReady(model) {
+    return {type: SET_MODEL_READY, payload: model}
 }
 
 export function markTfAsReady() {

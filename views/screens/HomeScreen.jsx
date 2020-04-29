@@ -12,7 +12,8 @@ class UHomeScreen extends Component {
 
     static propTypes = {
         tfReady: PropTypes.bool,
-        modelReady: PropTypes.bool
+        drawModelReady: PropTypes.bool,
+        findModelReady: PropTypes.bool
     }
 
     render() {
@@ -21,8 +22,9 @@ class UHomeScreen extends Component {
                 <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <Image style={styles.logo} height={300} width={300} source={logo_bleu}/>
                 <View style={styles.menu}>
-                    {this.props.tfReady ? <Text>TF Ready</Text> : <Text>Tf pas ready</Text>}
-                    {this.props.modelReady ? <Text>model Ready</Text> : <Text>model pas ready</Text>}
+                    {this.props.tfReady ? <Text>TF ready</Text> : <Text>Tf pas ready</Text>}
+                    {this.props.drawModelReady ? <Text>Draw model ready</Text> : <Text>Draw model pas ready</Text>}
+                    {this.props.findModelReady ? <Text>Find model ready</Text> : <Text>Find model pas ready</Text>}
                     <Button
                         style={styles.button}
                         title="C'est parti !"
@@ -53,7 +55,8 @@ const styles = StyleSheet.create({
 function mapStoreToProps(state) {
     return {
         tfReady: state.game.tfReady,
-        modelReady: state.game.modelReady,
+        drawModelReady: state.game.drawModelReady,
+        findModelReady: state.game.findModelReady
     }
 }
 

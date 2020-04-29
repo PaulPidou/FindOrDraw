@@ -14,7 +14,8 @@ const initialState = {
     timerIsDone: false,
 
     tfReady: false,
-    modelReady: false,
+    drawModelReady: false,
+    findModelReady: false,
 
     gameStatus: false,
     gameStep: null,
@@ -35,8 +36,7 @@ export default function myReducer(state = initialState, action) {
         case SET_TF_READY:
             return {...state, tfReady: true }
         case SET_MODEL_READY:
-            return {...state, modelReady: true }
-
+            return action.payload === 'DRAW' ? {...state, drawModelReady: true } : {...state, findModelReady: true }
         case SET_GAME_STEP:
             return {...state, gameStep: action.payload }
         case SET_GAME_STATUS:
