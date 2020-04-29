@@ -1,14 +1,17 @@
 import React, {Component} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import Constants from "expo-constants";
+import * as PropTypes from "prop-types";
 
 import * as Colors from "../../constants/Constants";
 import Text from "../../components/Text";
-import {connect} from "react-redux";
 import {moveGameStep, resetGame} from "../../store/actions/GameActions";
 import GameSteps from "../../helpers/GameSteps";
-import * as PropTypes from "prop-types";
-import {bindActionCreators} from "redux";
+
+import QUICKDRAW_CLASSES from "../../assets/model/quickdraw_classes";
+import IMAGENET_CLASSES from "../../assets/model/imagenet_classes.json";
 
 class UPickScreen extends Component {
 
@@ -16,23 +19,31 @@ class UPickScreen extends Component {
         moveGameStep: PropTypes.func
     }
 
+    getRandomElement(classes) {
+        return classes[Math.floor(Math.random() * classes.length)];
+    }
 
     render() {
+        const drawElement = this.getRandomElement(QUICKDRAW_CLASSES)
+        const findElement = this.getRandomElement(IMAGENET_CLASSES)
         return (
             <View style={styles.container}>
                 <View>
                     <Text>PICK !</Text>
+                    <Button
+                        title={`Draw a ${drawElement}`}
+                        style={styles.menuEntry}
+                        onPress={() => {this.props.moveGameStep(GameSteps.DRAW, {payload: drawElement})}}/>
+                    <Button
+                        title={`Draw a ${findElement}`}
+                        style={styles.menuEntry}
+                        onPress={() => {this.props.moveGameStep(GameSteps.FIND, {payload: findElement})}}/>
 
-                    <Button title={'Draw'} style={styles.menuEntry} onPress={() => {
-                        this.props.moveGameStep(GameSteps.DRAW)
-                    }}/>
-                    <Button title={'Find'} style={styles.menuEntry} onPress={() => {
-                        this.props.moveGameStep(GameSteps.FIND)
-                    }}/>
-
-                    <Button title={'Reset la partie'} color="red" style={styles.menuEntry} onPress={() => {
-                        this.props.resetGame()
-                    }}/>
+                    <Button
+                        title={'Reset la partie'}
+                        color="red"
+                        style={styles.menuEntry}
+                        onPress={() => {this.props.resetGame()}}/>
                 </View>
             </View>)
     }

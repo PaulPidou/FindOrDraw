@@ -25,11 +25,10 @@ const TensorCamera = cameraWithTensors(Camera);
 class UFindScreen extends React.Component {
 
     static propTypes = {
-        moveGameStep: PropTypes.func
+        moveGameStep: PropTypes.func,
+        findElement: PropTypes.string
     }
-
-    rafID
-
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -37,6 +36,7 @@ class UFindScreen extends React.Component {
             cameraType: Camera.Constants.Type.back,
             results: []
         };
+        this.rafID = null
         this.handleImageTensorReady = this.handleImageTensorReady.bind(this);
     }
 
@@ -146,11 +146,17 @@ class UFindScreen extends React.Component {
     }
 }
 
+function mapStateToProps(state){
+    return {
+        findElement: state.game.gameElement
+    }
+}
+
 function mapActionToProps(dispatch) {
     return {
         moveGameStep: bindActionCreators(GameActions.moveGameStep, dispatch),
     }
 }
 
-const FindScreen = connect(null,mapActionToProps)(UFindScreen);
+const FindScreen = connect(mapStateToProps,mapActionToProps)(UFindScreen);
 export default FindScreen

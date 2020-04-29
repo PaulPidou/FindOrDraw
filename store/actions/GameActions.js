@@ -7,6 +7,7 @@ export const SET_MODEL_READY = 'game/model_ready';
 
 export const SET_GAME_STEP = 'game/step';
 export const SET_GAME_STATUS = 'game/status';
+export const SET_FINDORDRAWELEMENT = 'game/findordrawelement'
 
 
 export function markModelAsReady() {
@@ -39,7 +40,7 @@ export function resetGame() {
     }
 }
 
-export function moveGameStep(step) {
+export function moveGameStep(step, payload) {
     return (dispatch) => {
         const state = getStore()
         const currentStep = state.game.gameStep
@@ -47,5 +48,6 @@ export function moveGameStep(step) {
             setTimer(3 * 60)(dispatch)
         }
         dispatch({type: SET_GAME_STEP, payload: step})
+        dispatch({type: SET_FINDORDRAWELEMENT, payload: payload})
     }
 }

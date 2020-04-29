@@ -44,10 +44,6 @@ class UGameScreenManager extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-
-})
-
 function mapStateToProps(state) {
     return {
         gameStep: state.game.gameStep,
