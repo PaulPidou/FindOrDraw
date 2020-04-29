@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import * as PropTypes from "prop-types";
+import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import * as PropTypes from "prop-types";
 
+import * as tf from "@tensorflow/tfjs";
 import HomeScreen from "../screens/HomeScreen";
 import RulesScreen from "../screens/RulesScreen";
 import GameScreenManager from "../screens/GameScreenManager";
-import {bindActionCreators} from "redux";
 import * as GameActions from "../../store/actions/GameActions";
-import * as tf from "@tensorflow/tfjs";
 import {loadDrawModel, loadMobilenetModel} from "../../helpers/Prediction";
 
 const Stack = createStackNavigator();
