@@ -39,10 +39,8 @@ class UnconnectedAppNavigator extends Component {
     }
 
     async componentDidMount() {
-        Promise.all([
-            this.initTf(),
+            await this.initTf()
             this.loadDrawModel()
-        ]);
     }
 
 

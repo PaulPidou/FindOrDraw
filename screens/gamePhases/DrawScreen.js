@@ -156,5 +156,5 @@ function mapActionToProps(dispatch) {
     }
 }
 
-const DrawScreen = connect(null, mapActionToProps)(UDrawScreen);
+const DrawScreen = connect(mapStateToProps, mapActionToProps)(UDrawScreen);
 export default DrawScreen
