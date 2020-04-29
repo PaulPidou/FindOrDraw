@@ -1,14 +1,17 @@
 import * as tf from "@tensorflow/tfjs";
-import QUICKDRAW_CLASSES from "../assets/model/quickdraw_classes";
 import {bundleResourceIO} from "@tensorflow/tfjs-react-native";
+import * as mobilenet from "@tensorflow-models/mobilenet";
 
 const modelJson = require('../assets/model/model.json');
 const modelWeights = require('../assets/model/group1-shard1of1.bin');
 
-let model = null
+import QUICKDRAW_CLASSES from "../assets/model/quickdraw_classes";
 
-export async function loadModel(){
-    model = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeights));
+let drawModel = null
+let findModel = null
+
+export async function loadDrawModel(){
+    drawModel = await tf.loadLayersModel(bundleResourceIO(modelJson, modelWeights));
 }
 
 export async function predictFromDraw(sortedRGBPixels, width, height){
@@ -21,11 +24,19 @@ export async function predictFromDraw(sortedRGBPixels, width, height){
         return batchedImage.toFloat().div(tf.scalar(127.5)).sub(tf.scalar(1))
     });
 
-    if (model) {
-        const prediction = await model.predict(scaledImage)
+    if (drawModel) {
+        const prediction = await drawModel.predict(scaledImage)
         const predictedTensor = prediction.as1D().argMax()
         const predictedValue = (await predictedTensor.data())[0]
         return QUICKDRAW_CLASSES[predictedValue]
     }
     return null
+}
+
+export async function loadMobilenetModel() {
+    findModel = await mobilenet.load()
+}
+
+export async function predictFromCamera(imageTensor) {
+    return await findModel.classify(imageTensor);
 }

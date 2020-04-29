@@ -1,15 +1,11 @@
 import React, {Component} from 'react';
-import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
 import AppNavigator from "./views/navigation/AppNavigator";
-import {connect, Provider} from "react-redux"
+import {Provider} from "react-redux"
 import {getReduxStore, initStore} from "./store/storeInit";
 import {AppLoading} from 'expo';
 import {Ionicons} from '@expo/vector-icons';
 import * as Font from 'expo-font';
-import {bindActionCreators} from "redux";
-import * as GameActions from './store/actions/GameActions'
-import * as PropTypes from "prop-types";
 
 
 export default class App extends Component {

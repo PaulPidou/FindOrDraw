@@ -1,19 +1,20 @@
 import React from 'react';
-import {ActivityIndicator, View, Platform, Text, StatusBar, Dimensions} from 'react-native';
+import {ActivityIndicator, View, Platform, Text, StatusBar} from 'react-native';
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {Button} from "native-base";
+import * as PropTypes from "prop-types";
 
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
 
 import * as tf from '@tensorflow/tfjs';
-import * as mobilenet from '@tensorflow-models/mobilenet';
 import {cameraWithTensors} from '@tensorflow/tfjs-react-native';
-import GenericStyles from "../../constants/Style";
-import * as PropTypes from "prop-types";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
+
 import * as GameActions from "../../../store/actions/GameActions";
 import GameSteps from "../../../helpers/GameSteps";
-import {Button} from "native-base";
+import {predictFromCamera} from "../../../helpers/Prediction"
+import GenericStyles from "../../constants/Style";
 
 const inputTensorWidth = 152;
 const inputTensorHeight = 200;
@@ -25,23 +26,19 @@ const TensorCamera = cameraWithTensors(Camera);
 class UFindScreen extends React.Component {
 
     static propTypes = {
+        isModelReady: PropTypes.bool,
+        findElement: PropTypes.string,
         moveGameStep: PropTypes.func
     }
-
-    rafID
-
+    
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: true,
             cameraType: Camera.Constants.Type.back,
             results: []
         };
+        this.rafID = null
         this.handleImageTensorReady = this.handleImageTensorReady.bind(this);
-    }
-
-    async loadMobilenetModel() {
-        return await mobilenet.load()
     }
 
     async handleImageTensorReady(images, updatePreview, gl) {
@@ -50,9 +47,9 @@ class UFindScreen extends React.Component {
                 updatePreview();
             }
 
-            if (this.state.mobilenetModel != null) {
+            if (this.props.isModelReady) {
                 const imageTensor = images.next().value;
-                const prediction = await this.state.mobilenetModel.classify(imageTensor);
+                const prediction = await predictFromCamera(imageTensor);
 
                 this.setState({results: prediction});
                 tf.dispose(imageTensor);
@@ -74,18 +71,11 @@ class UFindScreen extends React.Component {
 
     async componentDidMount() {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        const mobilenetModel = await this.loadMobilenetModel();
 
-        this.setState({
-            hasCameraPermission: status === 'granted',
-            isLoading: false,
-            mobilenetModel
-        });
+        this.setState({ hasCameraPermission: status === 'granted' });
     }
 
     render() {
-        const {isLoading} = this.state;
-
         // TODO File issue to be able get this from expo.
         // Caller will still need to account for orientation/phone rotation changes
         let textureDims = null;
@@ -121,9 +111,9 @@ class UFindScreen extends React.Component {
         return (
             <View style={GenericStyles.container}>
                 <View>
-                    <Text style={GenericStyles.title}>Find a LABEL</Text>
+                    <Text style={GenericStyles.title}>{`Find a ${this.props.findElement}`}</Text>
                 </View>
-                {isLoading ? <ActivityIndicator size='large' color='#FF0266' /> : camView}
+                {!this.props.isModelReady ? <ActivityIndicator size='large' color='#FF0266' /> : camView}
                 <View style={GenericStyles.result}>
                     {(() => {
                         if (this.state.results.length > 0) {
@@ -145,11 +135,18 @@ class UFindScreen extends React.Component {
     }
 }
 
+function mapStateToProps(state){
+    return {
+        isModelReady : state.game.findModelReady,
+        findElement: state.game.gameElement
+    }
+}
+
 function mapActionToProps(dispatch) {
     return {
         moveGameStep: bindActionCreators(GameActions.moveGameStep, dispatch),
     }
 }
 
-const FindScreen = connect(null,mapActionToProps)(UFindScreen);
+const FindScreen = connect(mapStateToProps,mapActionToProps)(UFindScreen);
 export default FindScreen

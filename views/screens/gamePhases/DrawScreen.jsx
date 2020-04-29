@@ -1,14 +1,15 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
 import {Platform, AppState, View, StatusBar} from 'react-native';
-import {Button} from 'native-base'
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {Button} from 'native-base';
+import * as PropTypes from "prop-types";
 
 import Text from "../../components/Text";
 import GenericStyles from "../../constants/Style";
 import {transposeAndApplyAlpha} from "../../../helpers/ImageTransformer";
 import {predictFromDraw} from "../../../helpers/Prediction";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
 import * as GameActions from "../../../store/actions/GameActions";
 import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
@@ -18,7 +19,8 @@ class UDrawScreen extends Component {
 
     static propTypes = {
         moveGameStep: PropTypes.func,
-        isModelReady: PropTypes.bool
+        isModelReady: PropTypes.bool,
+        drawElement: PropTypes.string
     }
 
     constructor(props) {
@@ -60,13 +62,12 @@ class UDrawScreen extends Component {
     }
 
     onChangeAsync = async () => {
-        this.setState({thinking: true})
+        this.setState({ thinking: true })
 
         const pixels = this.sketch.renderer.extract.pixels()
         const length = Math.sqrt(pixels.length / 4)
 
-        console.warn(pixels.length)
-        const normalizedRGBPixels = await transposeAndApplyAlpha(pixels, length, length)
+        const normalizedRGBPixels = transposeAndApplyAlpha(pixels, length, length)
         const prediction = await predictFromDraw(normalizedRGBPixels, length, length)
 
         this.setState({prediction, thinking: false})
@@ -76,7 +77,7 @@ class UDrawScreen extends Component {
         return (
             <View style={GenericStyles.container}>
                 <View>
-                    <Text style={GenericStyles.title}>Draw me something !</Text>
+                    <Text style={GenericStyles.title}>{`Draw a ${this.props.drawElement}`}</Text>
                 </View>
                 <View style={GenericStyles.gameZone}>
                     <View style={GenericStyles.sketchContainer}>
@@ -140,7 +141,8 @@ class UDrawScreen extends Component {
 
 function mapStateToProps(state) {
     return {
-        isModelReady: state.game.modelReady
+        isModelReady : state.game.drawModelReady,
+        drawElement: state.game.gameElement
     }
 }
 
