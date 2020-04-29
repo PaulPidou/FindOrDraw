@@ -10,9 +10,9 @@ import FindScreen from "../screens/gamePhases/FindScreen";
 import RulesScreen from "../screens/RulesScreen";
 import GameScreenManager from "../screens/GameScreenManager";
 import {bindActionCreators} from "redux";
-import * as GameActions from "../store/actions/GameActions";
+import * as GameActions from "../../store/actions/GameActions";
 import * as tf from "@tensorflow/tfjs";
-import {loadModel} from "../helpers/Prediction";
+import {loadModel} from "../../helpers/Prediction";
 
 const Stack = createStackNavigator();
 

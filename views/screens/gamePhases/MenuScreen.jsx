@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
 import Text from "../../components/Text";
-import {moveGameStep} from "../../store/actions/GameActions";
-import GameSteps from "../../helpers/GameSteps";
+import {moveGameStep} from "../../../store/actions/GameActions";
+import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
 import {connect} from "react-redux"
 import {bindActionCreators} from "redux";

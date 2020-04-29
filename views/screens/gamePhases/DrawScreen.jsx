@@ -72,6 +72,7 @@ class UDrawScreen extends Component {
 
     onChangeAsync = async () => {
         this.setState({ thinking: true })
+
         const pixels = this.sketch.renderer.extract.pixels()
         const length = Math.sqrt(pixels.length / 4)
 
