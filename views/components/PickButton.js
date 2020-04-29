@@ -15,11 +15,11 @@ export default class PickButton extends React.Component{
 
     catchPhrase() {
         if(this.props.type === GameSteps.FIND){
-            return <Text style={styles.catchPhrase}>Trouve un :</Text>
+            return <Text style={styles.catchPhrase}>Find me a :</Text>
         }
 
         if(this.props.type === GameSteps.DRAW){
-            return <Text style={styles.catchPhrase}>Dessine un :</Text>
+            return <Text style={styles.catchPhrase}>Draw me a :</Text>
         }
     }
 
