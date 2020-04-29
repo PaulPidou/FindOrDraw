@@ -1,5 +1,6 @@
 import React from 'react';
-import {ActivityIndicator, View, Platform, Text, StatusBar, Dimensions} from 'react-native';
+import {ActivityIndicator, View, Platform, Text, StatusBar} from 'react-native';
+import {Button} from "native-base";
 
 import * as Permissions from 'expo-permissions';
 import { Camera } from 'expo-camera';
@@ -13,7 +14,6 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import * as GameActions from "../../../store/actions/GameActions";
 import GameSteps from "../../../helpers/GameSteps";
-import {Button} from "native-base";
 
 const inputTensorWidth = 152;
 const inputTensorHeight = 200;
@@ -122,7 +122,7 @@ class UFindScreen extends React.Component {
             <View style={GenericStyles.container}>
                 <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <View>
-                    <Text style={GenericStyles.title}>Find a LABEL</Text>
+                    <Text style={GenericStyles.title}>{`Find a ${this.props.findElement}`}</Text>
                 </View>
                 {isLoading ? <ActivityIndicator size='large' color='#FF0266' /> : camView}
                 <View style={GenericStyles.result}>

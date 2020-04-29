@@ -25,7 +25,6 @@
     "native-base": "2.13.8",
     "prop-types": "^15.7.2",
     "react": "~16.12.0",
-    "react-bootstrap": "^1.0.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
     "react-native-fs": "^2.16.6",
     "react-native-gesture-handler": "~1.6.0",
@@ -33,7 +32,6 @@
     "react-native-safe-area-context": "0.7.3",
     "react-native-screens": "~2.2.0",
     "react-redux": "^7.2.0",
-    "react-switch": "^5.0.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0"
   },

@@ -40,7 +40,7 @@ export function resetGame() {
     }
 }
 
-export function moveGameStep(step, payload) {
+export function moveGameStep(step, payload=null) {
     return (dispatch) => {
         const state = getStore()
         const currentStep = state.game.gameStep
@@ -48,6 +48,8 @@ export function moveGameStep(step, payload) {
             setTimer(3 * 60)(dispatch)
         }
         dispatch({type: SET_GAME_STEP, payload: step})
-        dispatch({type: SET_FINDORDRAWELEMENT, payload: payload})
+        if(payload) {
+            dispatch({type: SET_FINDORDRAWELEMENT, payload: payload.payload })
+        }
     }
 }

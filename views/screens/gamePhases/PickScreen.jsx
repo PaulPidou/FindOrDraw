@@ -7,11 +7,11 @@ import * as PropTypes from "prop-types";
 
 import * as Colors from "../../constants/Constants";
 import Text from "../../components/Text";
-import {moveGameStep, resetGame} from "../../store/actions/GameActions";
-import GameSteps from "../../helpers/GameSteps";
+import {moveGameStep, resetGame} from "../../../store/actions/GameActions";
+import GameSteps from "../../../helpers/GameSteps";
 
-import QUICKDRAW_CLASSES from "../../assets/model/quickdraw_classes";
-import IMAGENET_CLASSES from "../../assets/model/imagenet_classes.json";
+import QUICKDRAW_CLASSES from "../../../assets/model/quickdraw_classes";
+import IMAGENET_CLASSES from "../../../assets/model/imagenet_classes.json";
 
 class UPickScreen extends Component {
 
@@ -35,7 +35,7 @@ class UPickScreen extends Component {
                         style={styles.menuEntry}
                         onPress={() => {this.props.moveGameStep(GameSteps.DRAW, {payload: drawElement})}}/>
                     <Button
-                        title={`Draw a ${findElement}`}
+                        title={`Find a ${findElement}`}
                         style={styles.menuEntry}
                         onPress={() => {this.props.moveGameStep(GameSteps.FIND, {payload: findElement})}}/>
 

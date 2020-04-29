@@ -42,7 +42,7 @@ export default function myReducer(state = initialState, action) {
         case SET_GAME_STATUS:
             return {...state, gameStatus: action.payload }
         case SET_FINDORDRAWELEMENT:
-            return {...state, gameElement: action.payload}
+            return {...state, gameElement: action.payload }
 
         default:
             return state

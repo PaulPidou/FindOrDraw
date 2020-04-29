@@ -8,10 +8,10 @@ import * as PropTypes from "prop-types";
 
 import Text from "../../components/Text";
 import GenericStyles from "../../constants/Style";
-import {transposeAndApplyAlpha} from "../../helpers/ImageTransformer";
-import {predictFromDraw} from "../../helpers/Prediction";
-import * as GameActions from "../../store/actions/GameActions";
-import GameSteps from "../../helpers/GameSteps";
+import {transposeAndApplyAlpha} from "../../../helpers/ImageTransformer";
+import {predictFromDraw} from "../../../helpers/Prediction";
+import * as GameActions from "../../../store/actions/GameActions";
+import GameSteps from "../../../helpers/GameSteps";
 
 const isAndroid = Platform.OS === 'android';
 
@@ -90,7 +90,7 @@ class UDrawScreen extends Component {
             <View style={GenericStyles.container}>
                 <StatusBar barStyle='light-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <View>
-                    <Text style={GenericStyles.title}>Draw me something !</Text>
+                    <Text style={GenericStyles.title}>{`Draw a ${this.props.drawElement}`}</Text>
                 </View>
                 <View style={GenericStyles.gameZone}>
                     <View style={GenericStyles.sketchContainer}>
