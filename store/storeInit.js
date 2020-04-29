@@ -1,7 +1,7 @@
 import thunk from "redux-thunk";
 import {applyMiddleware, compose, createStore} from "redux";
 import rootReducer from "./reducers/RootReducer";
- import StatePersister from "./StatePersister";
+import StatePersister from "./StatePersister";
 
 
 let store;

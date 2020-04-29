@@ -12,17 +12,9 @@ import {bindActionCreators} from "redux";
 import * as GameActions from "../../../store/actions/GameActions";
 import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
+import {isAndroid, uuidv4} from "../../../helpers/Utils";
 
-const isAndroid = Platform.OS === 'android';
-
-function uuidv4() {
-    //https://stackoverflow.com/a/2117523/4047926
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = (Math.random() * 16) | 0,
-            v = c == 'x' ? r : (r & 0x3) | 0x8;
-        return v.toString(16);
-    });
-}
+import RnBgTask from "react-native-bg-thread";
 
 class UDrawScreen extends Component {
 
@@ -70,7 +62,7 @@ class UDrawScreen extends Component {
     }
 
     onChangeAsync = async () => {
-        this.setState({ thinking: true })
+        this.setState({thinking: true})
 
         const pixels = this.sketch.renderer.extract.pixels()
         const length = Math.sqrt(pixels.length / 4)
@@ -78,10 +70,7 @@ class UDrawScreen extends Component {
         const normalizedRGBPixels = transposeAndApplyAlpha(pixels, length, length)
         const prediction = await predictFromDraw(normalizedRGBPixels, length, length)
 
-        this.setState({
-            prediction,
-            thinking: false
-        })
+        this.setState({prediction, thinking: false})
     };
 
     render() {
@@ -122,20 +111,26 @@ class UDrawScreen extends Component {
                         }
                     })()}
                 </View>
-                <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0 }}>
+                <View style={{flexDirection: 'row', position: 'absolute', bottom: 0}}>
                     <Button full
-                        style={GenericStyles.button}
-                        onPress={() => {this.sketch.undo();}}>
+                            style={GenericStyles.button}
+                            onPress={() => {
+                                this.sketch.undo();
+                            }}>
                         <Text>UNDO</Text>
                     </Button>
                     <Button full
-                        style={GenericStyles.button}
-                        onPress={() => {this.clearSketch();}}>
+                            style={GenericStyles.button}
+                            onPress={() => {
+                                this.clearSketch();
+                            }}>
                         <Text>CLEAR</Text>
                     </Button>
                     <Button full
                             style={GenericStyles.button}
-                            onPress={() => {this.props.moveGameStep(GameSteps.PICK)}}>
+                            onPress={() => {
+                                this.props.moveGameStep(GameSteps.PICK)
+                            }}>
                         <Text>OK</Text>
                     </Button>
                 </View>
@@ -145,9 +140,9 @@ class UDrawScreen extends Component {
     }
 }
 
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
-        isModelReady : state.game.modelReady
+        isModelReady: state.game.modelReady
     }
 }
 
