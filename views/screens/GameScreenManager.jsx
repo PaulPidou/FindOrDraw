@@ -3,7 +3,7 @@ import {Button, StyleSheet, View} from "react-native";
 
 import MainContainer from "../components/MainContainer";
 import {bindActionCreators} from "redux";
-import * as GameActions from '../store/actions/GameActions'
+import * as GameActions from '../../store/actions/GameActions'
 import {connect} from 'react-redux'
 import DrawScreen from "./gamePhases/DrawScreen";
 import FindScreen from "./gamePhases/FindScreen";

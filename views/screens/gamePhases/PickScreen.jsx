@@ -5,8 +5,8 @@ import Constants from "expo-constants";
 import * as Colors from "../../constants/Constants";
 import Text from "../../components/Text";
 import {connect} from "react-redux";
-import {moveGameStep, resetGame} from "../../store/actions/GameActions";
-import GameSteps from "../../helpers/GameSteps";
+import {moveGameStep, resetGame} from "../../../store/actions/GameActions";
+import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
 import {bindActionCreators} from "redux";
 

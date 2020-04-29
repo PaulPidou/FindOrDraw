@@ -5,12 +5,12 @@ import {Button} from 'native-base'
 
 import Text from "../../components/Text";
 import GenericStyles from "../../constants/Style";
-import {transposeAndApplyAlpha} from "../../helpers/ImageTransformer";
-import {predictFromDraw} from "../../helpers/Prediction";
+import {transposeAndApplyAlpha} from "../../../helpers/ImageTransformer";
+import {predictFromDraw} from "../../../helpers/Prediction";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as GameActions from "../../store/actions/GameActions";
-import GameSteps from "../../helpers/GameSteps";
+import * as GameActions from "../../../store/actions/GameActions";
+import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
 
 const isAndroid = Platform.OS === 'android';
@@ -71,6 +71,7 @@ class UDrawScreen extends Component {
 
     onChangeAsync = async () => {
         this.setState({ thinking: true })
+
         const pixels = this.sketch.renderer.extract.pixels()
         const length = Math.sqrt(pixels.length / 4)
 

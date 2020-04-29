@@ -11,8 +11,8 @@ import GenericStyles from "../../constants/Style";
 import * as PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as GameActions from "../../store/actions/GameActions";
-import GameSteps from "../../helpers/GameSteps";
+import * as GameActions from "../../../store/actions/GameActions";
+import GameSteps from "../../../helpers/GameSteps";
 import {Button} from "native-base";
 
 const inputTensorWidth = 152;

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import * as tf from '@tensorflow/tfjs';
 import '@tensorflow/tfjs-react-native';
-import AppNavigator from "./navigation/AppNavigator";
+import AppNavigator from "./views/navigation/AppNavigator";
 import {connect, Provider} from "react-redux"
 import {getReduxStore, initStore} from "./store/storeInit";
 import {AppLoading} from 'expo';
