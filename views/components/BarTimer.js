@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {connect} from "react-redux";
 import {StyleSheet, View} from "react-native";
 import Text from "./Text";
-import * as Colors from "../constants/Constants";
+import * as Colors from "../constants/Colors";
 import Constants from "expo-constants";
 
 class UBarTimer extends Component{
@@ -13,10 +13,7 @@ class UBarTimer extends Component{
     }
 
     render() {
-        if(!this.props.time){
-            return null;
-        }
-        const currentPerc = this.props.time / this.props.maxTime
+        const currentPerc = this.props.time ? this.props.time / this.props.maxTime : 0
         return (
             <View style={styles.container}>
                 <View style={{...styles.bar, width: `${currentPerc*100}%`}}/>
@@ -30,7 +27,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'stretch',
         flexDirection: 'row',
-        marginTop: 5
     },
 
     bar: {

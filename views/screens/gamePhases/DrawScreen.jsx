@@ -1,13 +1,12 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
-import {Platform, AppState, View, StatusBar} from 'react-native';
+import {AppState, View} from 'react-native';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Button} from 'native-base';
-import * as PropTypes from "prop-types";
 
 import Text from "../../components/Text";
-import GenericStyles from "../../constants/Style";
+import GenericStyles from "../../constants/GenericStyle";
 import {transposeAndApplyAlpha} from "../../../helpers/ImageTransformer";
 import {predictFromDraw} from "../../../helpers/Prediction";
 import * as GameActions from "../../../store/actions/GameActions";

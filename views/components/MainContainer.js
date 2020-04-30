@@ -1,6 +1,6 @@
 import React from "react";
 import {StyleSheet, View } from "react-native";
-import * as Colors from "../constants/Constants";
+import * as Colors from "../constants/Colors";
 import Constants from "expo-constants";
 
 export default function MainContainer({style, children, ...rest}){

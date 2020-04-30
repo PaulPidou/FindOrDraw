@@ -24,7 +24,8 @@ export default class App extends Component {
                 Roboto: require("native-base/Fonts/Roboto.ttf"),
                 Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
                 Ionicons: require("native-base/Fonts/Ionicons.ttf"),
-                Big_Stomach: require("./assets/Big Stomach.ttf")
+                // CourrierNew: require("native-base/Fonts/Co.ttf"),
+                BigStomach: require("./assets/Big-Stomach.ttf")
             }),
             initStore()
         ])

@@ -14,7 +14,7 @@ import {cameraWithTensors} from '@tensorflow/tfjs-react-native';
 import * as GameActions from "../../../store/actions/GameActions";
 import GameSteps from "../../../helpers/GameSteps";
 import {predictFromCamera} from "../../../helpers/Prediction"
-import GenericStyles from "../../constants/Style";
+import GenericStyles from "../../constants/GenericStyle";
 
 const inputTensorWidth = 152;
 const inputTensorHeight = 200;
@@ -30,7 +30,7 @@ class UFindScreen extends React.Component {
         findElement: PropTypes.string,
         moveGameStep: PropTypes.func
     }
-    
+
     constructor(props) {
         super(props);
         this.state = {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet, View, Button, StatusBar, Image} from 'react-native';
 import Constants from "expo-constants";
 
-import * as Colors from "../constants/Constants";
+import * as Colors from "../constants/Colors";
 import logo_bleu from "../../assets/logo_transparent_vert.png"
 import Text from "../components/Text";
 

@@ -11,8 +11,9 @@ import PickScreen from "./gamePhases/PickScreen";
 import ScoresScreen from "./gamePhases/ScoresScreen";
 import MenuScreen from "./gamePhases/MenuScreen";
 import Text from "../components/Text";
-import Timer from "../components/Timer";
+import ScoresBar from "../components/ScoresBar";
 import BarTimer from "../components/BarTimer";
+import Logo from "../components/Logo";
 
 class UGameScreenManager extends Component {
 
@@ -40,6 +41,8 @@ class UGameScreenManager extends Component {
         return <MainContainer style={styles.container}>
             <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
             <BarTimer maxTime={3 * 60} />
+            <Logo/>
+            <ScoresBar/>
             {this.renderGameStep()}
         </MainContainer>
     }

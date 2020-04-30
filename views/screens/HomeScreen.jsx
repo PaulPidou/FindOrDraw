@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Image, StatusBar, StyleSheet, View} from 'react-native';
 
-import * as Colors from "../constants/Constants";
+import * as Colors from "../constants/Colors";
 import logo_bleu from "../../assets/logo_transparent_vert.png"
 import * as PropTypes from "prop-types";
 import {connect} from "react-redux"

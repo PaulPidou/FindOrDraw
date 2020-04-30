@@ -2,7 +2,7 @@ import GameSteps from "../../helpers/GameSteps";
 import Text from "./Text";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import React from "react";
-import * as Constants from "../constants/Constants";
+import * as Constants from "../constants/Colors";
 import * as PropTypes from 'prop-types'
 import {connect} from "react-redux";
 

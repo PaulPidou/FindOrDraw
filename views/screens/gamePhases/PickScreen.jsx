@@ -1,20 +1,18 @@
 import React, {Component} from 'react';
 import {Button, StyleSheet, View} from 'react-native';
-import * as Constants from "../../constants/Constants"
+import * as Constants from "../../constants/Colors"
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import * as PropTypes from "prop-types";
-
-import * as Colors from "../../constants/Constants";
 import Text from "../../components/Text";
 import {moveGameStep, resetGame} from "../../../store/actions/GameActions";
 import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
-import {bindActionCreators} from "redux";
 import PickButton from "../../components/PickButton";
 
 import QUICKDRAW_CLASSES from "../../../assets/model/quickdraw_classes";
 import IMAGENET_CLASSES from "../../../assets/model/imagenet_classes.json";
+import BlueButton from "../../components/BlueButton";
+import GameStepStyle from "../../constants/GameStepStyle";
 
 class UPickScreen extends Component {
 
@@ -30,23 +28,42 @@ class UPickScreen extends Component {
         const drawElement = this.getRandomElement(QUICKDRAW_CLASSES)
         const findElement = this.getRandomElement(IMAGENET_CLASSES)
         return (
-            <View style={styles.container}>
-                <Text style={styles.mainTitle}>Pick !</Text>
+            <View style={GameStepStyle.container}>
 
-                <View style={styles.picker}>
-                    <PickButton type={GameSteps.DRAW} value={drawElement} style={styles.menuEntry} onPress={() => {
-                        this.props.moveGameStep(GameSteps.DRAW)
-                    }}/>
-                    <View style={styles.splitter}/>
-                    <PickButton type={GameSteps.FIND} value={findElement} onPress={() => {
-                        this.props.moveGameStep(GameSteps.FIND)
-                    }}
-                    mode
-                    />
+                <View style={GameStepStyle.body}>
+                    <View style={styles.mainContent}>
+                        <View style={styles.gameChoiceBox}>
+                            <Text style={styles.choiceHeader}>Find a :</Text>
+                            <Text style={styles.choice}>{findElement}</Text>
+                        </View>
+                        <View style={styles.splitterContainer}>
+                            <View style={styles.splitter}/>
+                            <Text style={styles.or}>OR</Text>
+                            <View style={styles.splitter}/>
+                        </View>
+                        <View style={styles.gameChoiceBox}>
+                            <Text style={styles.choiceHeader}>Draw a :</Text>
+                            <Text style={styles.choice}>{drawElement}</Text>
+                        </View>
+
+                    </View>
+                    <View style={styles.buttonBar}>
+                        <BlueButton title={'DRAW'} onPress={() => {
+                            this.props.moveGameStep(GameSteps.DRAW)
+                        }}/>
+                        <BlueButton title={'FIND'} onPress={() => {
+                            this.props.moveGameStep(GameSteps.FIND)
+                        }}/>
+                    </View>
                 </View>
-                <Button title={'Reset la partie'} color="red" style={styles.menuEntry} onPress={() => {
-                    this.props.resetGame()
-                }}/>
+
+                <View style={GameStepStyle.footer}>
+                    <Button title={'Reset la partie'} color="red" style={styles.menuEntry} onPress={() => {
+                        this.props.resetGame()
+                    }}/>
+                </View>
+
+
             </View>)
     }
 }
@@ -62,26 +79,44 @@ const PickScreen = connect(null, mapActionToProps)(UPickScreen)
 export default PickScreen
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
+    mainContent: {
+        flex: 3,
+        flexDirection: "column",
     },
-    mainTitle: {
-        textAlign: "center",
-        fontSize: 70,
-        padding: 10,
-        marginTop: 30,
-    },
-    picker: {
+    gameChoiceBox:{
         flex: 1,
-        justifyContent: 'center',
-        paddingHorizontal: 50,
-        fontWeight: "800"
+        alignItems: "center",
+        justifyContent: "center",
+        maxHeight: 250,
+    },
+    choiceHeader: {
+        fontSize: 40,
+        marginVertical: 10
+    },
+    choice: {
+        fontSize: 40,
+        marginVertical: 10,
+        fontWeight: 'bold'
+    },
+    splitterContainer: {
+        flexDirection: "row",
+        alignItems: 'center',
+    },
+    buttonBar: {
+        flex: 1,
+        flexDirection: "row",
+        justifyContent: 'space-evenly',
+        alignItems: "flex-start",
+        margin: 20
     },
     splitter: {
-        marginVertical: 20,
+        flex: 1,
+        marginHorizontal: 20,
         height: 1,
-        backgroundColor: Constants.ContrastColorPrimary,
+        backgroundColor: Constants.FontColorPrimary,
     },
+    or: {
+        fontSize: 30,
+        marginHorizontal: 20,
+    }
 });

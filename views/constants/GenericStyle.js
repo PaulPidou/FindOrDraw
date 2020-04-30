@@ -1,5 +1,5 @@
 import {Dimensions, StyleSheet} from "react-native";
-import * as Colors from "./Constants";
+import * as Colors from "./Colors";
 import Constants from "expo-constants";
 
 const GenericStyles = StyleSheet.create({
