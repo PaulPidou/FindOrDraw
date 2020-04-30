@@ -13,6 +13,7 @@ import QUICKDRAW_CLASSES from "../../../assets/model/quickdraw_classes";
 import IMAGENET_CLASSES from "../../../assets/model/imagenet_classes.json";
 import BlueButton from "../../components/BlueButton";
 import GameStepStyle from "../../constants/GameStepStyle";
+import ButtonBar from "../../components/ButtonBar";
 
 class UPickScreen extends Component {
 
@@ -31,30 +32,29 @@ class UPickScreen extends Component {
             <View style={GameStepStyle.container}>
 
                 <View style={GameStepStyle.body}>
-                    <View style={styles.mainContent}>
-                        <View style={styles.gameChoiceBox}>
-                            <Text style={styles.choiceHeader}>Find a :</Text>
-                            <Text style={styles.choice}>{findElement}</Text>
-                        </View>
-                        <View style={styles.splitterContainer}>
-                            <View style={styles.splitter}/>
-                            <Text style={styles.or}>OR</Text>
-                            <View style={styles.splitter}/>
-                        </View>
-                        <View style={styles.gameChoiceBox}>
-                            <Text style={styles.choiceHeader}>Draw a :</Text>
-                            <Text style={styles.choice}>{drawElement}</Text>
-                        </View>
-
+                    <View style={styles.gameChoiceBox}>
+                        <Text style={styles.choiceHeader}>Find a:</Text>
+                        <Text style={styles.choice}>{findElement}</Text>
                     </View>
-                    <View style={styles.buttonBar}>
+                    <View style={styles.splitterContainer}>
+                        <View style={styles.splitter}/>
+                        <Text style={styles.or}>OR</Text>
+                        <View style={styles.splitter}/>
+                    </View>
+                    <View style={styles.gameChoiceBox}>
+                        <Text style={styles.choiceHeader}>Draw a:</Text>
+                        <Text style={styles.choice}>{drawElement}</Text>
+                    </View>
+
+                    <ButtonBar
+                        style={{marginTop: 40}}>
                         <BlueButton title={'DRAW'} onPress={() => {
                             this.props.moveGameStep(GameSteps.DRAW)
                         }}/>
                         <BlueButton title={'FIND'} onPress={() => {
                             this.props.moveGameStep(GameSteps.FIND)
                         }}/>
-                    </View>
+                    </ButtonBar>
                 </View>
 
                 <View style={GameStepStyle.footer}>
@@ -79,11 +79,7 @@ const PickScreen = connect(null, mapActionToProps)(UPickScreen)
 export default PickScreen
 
 const styles = StyleSheet.create({
-    mainContent: {
-        flex: 3,
-        flexDirection: "column",
-    },
-    gameChoiceBox:{
+    gameChoiceBox: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
@@ -101,13 +97,6 @@ const styles = StyleSheet.create({
     splitterContainer: {
         flexDirection: "row",
         alignItems: 'center',
-    },
-    buttonBar: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: 'space-evenly',
-        alignItems: "flex-start",
-        margin: 20
     },
     splitter: {
         flex: 1,

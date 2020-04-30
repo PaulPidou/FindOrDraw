@@ -1,6 +1,6 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
-import {AppState, View} from 'react-native';
+import {AppState, StyleSheet, View} from 'react-native';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {Button} from 'native-base';
@@ -13,6 +13,9 @@ import * as GameActions from "../../../store/actions/GameActions";
 import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
 import {isAndroid, uuidv4} from "../../../helpers/Utils";
+import ButtonBar from "../../components/ButtonBar";
+import BlueButton from "../../components/BlueButton";
+import GameStepStyle from "../../constants/GameStepStyle";
 
 class UDrawScreen extends Component {
 
@@ -61,7 +64,7 @@ class UDrawScreen extends Component {
     }
 
     onChangeAsync = async () => {
-        this.setState({ thinking: true })
+        this.setState({thinking: true})
 
         const pixels = this.sketch.renderer.extract.pixels()
         const length = Math.sqrt(pixels.length / 4)
@@ -74,10 +77,8 @@ class UDrawScreen extends Component {
 
     render() {
         return (
-            <View style={GenericStyles.container}>
-                <View>
-                    <Text style={GenericStyles.title}>{`Draw a ${this.props.drawElement}`}</Text>
-                </View>
+            <View style={GameStepStyle.container}>
+                <Text style={styles.title}>{`Draw a ${this.props.drawElement}`}</Text>
                 <View style={GenericStyles.gameZone}>
                     <View style={GenericStyles.sketchContainer}>
                         <ExpoPixi.Sketch
@@ -94,53 +95,62 @@ class UDrawScreen extends Component {
                 </View>
                 <View style={GenericStyles.result}>
                     {(() => {
-                        if (!this.props.isModelReady) {
-                            return <Text style={GenericStyles.resultContextText}>Loading...</Text>
-                        }
                         if (this.state.thinking) {
-                            return <Text style={GenericStyles.resultContextText}>Let's see...</Text>
-                        } else if (this.state.prediction) {
-                            return <>
-                                <Text style={GenericStyles.resultContextText}>I see:</Text>
-                                <Text style={GenericStyles.resultText}>{`${this.state.prediction}`}</Text>
-                            </>
+                            return <Text style={styles.prediction}>Let's see...</Text>
                         } else {
-                            return null
+                            return <Text style={styles.prediction}>
+                                I see{this.state.prediction && ':'} {this.state.prediction || 'nothing'}</Text>
                         }
                     })()}
                 </View>
-                <View style={{flexDirection: 'row', position: 'absolute', bottom: 0}}>
-                    <Button full
-                            style={GenericStyles.button}
-                            onPress={() => {
-                                this.sketch.undo();
-                            }}>
-                        <Text>UNDO</Text>
-                    </Button>
-                    <Button full
-                            style={GenericStyles.button}
-                            onPress={() => {
-                                this.clearSketch();
-                            }}>
-                        <Text>CLEAR</Text>
-                    </Button>
-                    <Button full
-                            style={GenericStyles.button}
-                            onPress={() => {
-                                this.props.moveGameStep(GameSteps.PICK)
-                            }}>
-                        <Text>OK</Text>
-                    </Button>
-                </View>
-
+                <ButtonBar
+                    style={{marginTop: 40}}
+                >
+                    <BlueButton
+                        title={'CLEAR'}
+                        onPress={() => {
+                            this.clearSketch();
+                        }}
+                    />
+                    <BlueButton
+                        title={'UNDO'}
+                        onPress={() => {
+                            this.sketch.undo();
+                        }}
+                    />
+                </ButtonBar>
+                <ButtonBar>
+                    <BlueButton
+                        title={'FIND instead'}
+                        onPress={() => {
+                            this.props.moveGameStep(GameSteps.FIND)
+                        }}
+                    />
+                </ButtonBar>
             </View>
         );
     }
 }
 
+
+const styles = StyleSheet.create({
+    result: {
+        alignItems: "center"
+    },
+    prediction: {
+        fontSize: 15,
+        textAlign: 'center'
+    },
+    title: {
+        fontSize: 30,
+        textAlign: 'center',
+        marginTop: 15
+    }
+});
+
 function mapStateToProps(state) {
     return {
-        isModelReady : state.game.drawModelReady,
+        isModelReady: state.game.drawModelReady,
         drawElement: state.game.gameElement
     }
 }

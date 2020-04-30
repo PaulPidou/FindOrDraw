@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, StatusBar, StyleSheet, View} from "react-native";
+import {StatusBar, StyleSheet} from "react-native";
 
 import MainContainer from "../components/MainContainer";
 import {bindActionCreators} from "redux";
@@ -9,11 +9,10 @@ import DrawScreen from "./gamePhases/DrawScreen";
 import FindScreen from "./gamePhases/FindScreen";
 import PickScreen from "./gamePhases/PickScreen";
 import ScoresScreen from "./gamePhases/ScoresScreen";
-import MenuScreen from "./gamePhases/MenuScreen";
-import Text from "../components/Text";
 import ScoresBar from "../components/ScoresBar";
 import BarTimer from "../components/BarTimer";
 import Logo from "../components/Logo";
+import GameSteps from "../../helpers/GameSteps";
 
 class UGameScreenManager extends Component {
 
@@ -26,11 +25,10 @@ class UGameScreenManager extends Component {
     }
 
     static gameStep = {
-        "menu": <MenuScreen/>,
-        "pick": <PickScreen/>,
-        "draw": <DrawScreen/>,
-        "find": <FindScreen/>,
-        "scores": <ScoresScreen/>,
+        [GameSteps.PICK]: <PickScreen/>,
+        [GameSteps.DRAW]: <DrawScreen/>,
+        [GameSteps.FIND]: <FindScreen/>,
+        [GameSteps.SCORE]: <ScoresScreen/>,
     };
 
     renderGameStep() {

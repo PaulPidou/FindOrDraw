@@ -21,7 +21,7 @@ export function markTfAsReady() {
 export function startGame() {
     return (dispatch) => {
         dispatch({type: SET_GAME_STATUS, payload: true})
-        dispatch({type: SET_GAME_STEP, payload: GameSteps.MENU})
+        dispatch({type: SET_GAME_STEP, payload: GameSteps.PICK})
     }
 }
 
@@ -36,7 +36,7 @@ export function stopGame() {
 export function resetGame() {
     return (dispatch) => {
         dispatch(resetTimer())
-        dispatch({type: SET_GAME_STEP, payload: GameSteps.MENU})
+        dispatch({type: SET_GAME_STEP, payload: GameSteps.PICK})
     }
 }
 
@@ -44,7 +44,7 @@ export function moveGameStep(step, payload=null) {
     return (dispatch) => {
         const state = getStore()
         const currentStep = state.game.gameStep
-        if(currentStep === GameSteps.MENU && step === GameSteps.PICK){
+        if(!currentStep && step === GameSteps.PICK){
             setTimer(3 * 60)(dispatch)
         }
         dispatch({type: SET_GAME_STEP, payload: step})

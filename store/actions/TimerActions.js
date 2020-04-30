@@ -1,4 +1,6 @@
 import {getStore} from "../storeInit";
+import {moveGameStep} from "./GameActions";
+import GameSteps from "../../helpers/GameSteps";
 
 
 export const SET_TIMER = 'game/set_timer';
@@ -22,6 +24,7 @@ export function setTimer(seconds) {
             const state = getStore();
             if (state && state.game.timerTime && state.game.timerTime <= 0) {
                 clearInterval(state.game.timerId)
+                dispatch(moveGameStep(GameSteps.SCORE))
                 dispatch({type: TIMER_DONE})
             }
         }, 1000)

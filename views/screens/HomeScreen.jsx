@@ -7,6 +7,11 @@ import * as PropTypes from "prop-types";
 import {connect} from "react-redux"
 import Text from "../components/Text";
 import MainContainer from "../components/MainContainer";
+import BlueButton from "../components/BlueButton";
+import Logo from "../components/Logo";
+import GenericStyles from "../constants/GenericStyle";
+import ButtonBar from "../components/ButtonBar";
+import {Icon} from "native-base";
 
 class UHomeScreen extends Component {
 
@@ -20,17 +25,43 @@ class UHomeScreen extends Component {
         return (
             <MainContainer>
                 <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
-                <Image style={styles.logo} height={300} width={300} source={logo_bleu}/>
+                <Logo/>
+                <View style={styles.statusContainer}>
+                    <View style={styles.statusGroup}>
+                        <Icon style={styles.statusIcon} name={this.props.tfReady ? 'md-checkmark' : 'md-close'}/>
+                        <Text>TensorFlow</Text>
+                    </View>
+                    <View style={styles.statusGroup}>
+                        <Icon style={styles.statusIcon} name={this.props.drawModelReady ? 'md-checkmark' : 'md-close'}/>
+                        <Text>Draw Model</Text>
+                    </View>
+                    <View style={styles.statusGroup}>
+                        <Icon style={styles.statusIcon} name={this.props.findModelReady ? 'md-checkmark' : 'md-close'}/>
+                        <Text>Find Model</Text>
+                    </View>
+                </View>
                 <View style={styles.menu}>
-                    {this.props.tfReady ? <Text>TF ready</Text> : <Text>Tf pas ready</Text>}
-                    {this.props.drawModelReady ? <Text>Draw model ready</Text> : <Text>Draw model pas ready</Text>}
-                    {this.props.findModelReady ? <Text>Find model ready</Text> : <Text>Find model pas ready</Text>}
-                    <Button
-                        style={styles.button}
-                        title="C'est parti !"
-                        color={Colors.VertLogo}
-                        onPress={() => this.props.navigation.navigate('Game')}
-                    />
+
+                    <Text style={styles.textS1}>Welcome</Text>
+                    <View style={styles.spaccer}/>
+                    <Text style={styles.textS2}>This game app is simple as its title!</Text>
+                    <View style={styles.spaccer}/>
+
+                    <Text style={styles.textBold}>You are given two choices:</Text>
+                    <Text style={styles.textBold}>Find a thing thanks to our camera</Text>
+                    <Text style={styles.textBold}>Draw another thing</Text>
+
+                    <View style={styles.spaccer}/>
+
+                    <Text style={styles.textS2}>You'll have 3 minutes to Find Or Draw the maximum of things.</Text>
+
+                    <ButtonBar
+                    style={{marginTop: 40}}>
+                        <BlueButton
+                            title="Let's go"
+                            onPress={() => this.props.navigation.navigate('Game')}
+                        />
+                    </ButtonBar>
                 </View>
             </MainContainer>
         )
@@ -38,18 +69,44 @@ class UHomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-    logo: {
-        alignSelf: "center",
-        marginVertical: 30
+
+    statusContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    },
+    statusGroup: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    statusIcon: {
+        fontSize: 20,
+        marginHorizontal: 5
+    },
+
+    spaccer: {
+        marginVertical: 10,
+    },
+    textS1:{
+        textAlign: 'center',
+        fontSize: 50,
+        marginVertical: 20
+    },
+    textS2:{
+        textAlign: 'center',
+        fontSize: 35,
+    },
+    textBold:{
+        fontWeight: 'bold',
+        textAlign: 'center',
+        fontSize: 25,
     },
     menu: {
         flex: 2,
-        justifyContent: 'space-around',
+        justifyContent: 'center',
+        marginVertical: 40,
         alignItems: 'stretch',
     },
-    button: {
-        flex: 1
-    }
 });
 
 function mapStoreToProps(state) {

@@ -36,7 +36,7 @@ export default function myReducer(state = initialState, action) {
         case SET_TF_READY:
             return {...state, tfReady: true }
         case SET_MODEL_READY:
-            return action.payload === 'DRAW' ? {...state, drawModelReady: true } : {...state, findModelReady: true }
+            return {...state, [action.payload === 'DRAW' ? "drawModelReady" : "findModelReady"]: true }
         case SET_GAME_STEP:
             return {...state, gameStep: action.payload }
         case SET_GAME_STATUS:

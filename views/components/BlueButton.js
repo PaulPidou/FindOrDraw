@@ -26,9 +26,9 @@ const styles = StyleSheet.create({
         color: "white",
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 15,
+        paddingHorizontal: 55,
+        paddingVertical: 12,
         margin: 10,
-        flex: 1,
 
         shadowColor: "#000",
         shadowOffset: {
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     value: {
         textAlign: "center",
         color: Colors.BackgroundColor,
-        fontSize: 20,
+        fontSize: 25,
         fontWeight: "bold"
     },
 
