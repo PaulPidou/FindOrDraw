@@ -22,7 +22,7 @@ from tensorflow.keras.applications import MobileNet
 
 NCATS = 340
 size = 64
-model = MobileNet(input_shape=(size, size, 1), alpha=1., weights='quickdraw_model.h5', classes=NCATS)
+model = MobileNet(input_shape=(size, size, 1), alpha=1., weights='weights/quickdraw_model.h5', classes=NCATS)
 
 saved_model_path = "./quickdraw_model.h5"
 model.save(saved_model_path)
