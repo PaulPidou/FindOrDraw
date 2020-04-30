@@ -11,12 +11,13 @@ import {connect} from "react-redux";
 import * as PropTypes from "prop-types";
 import GenericStyles from "../../constants/GenericStyle";
 import GameStepStyle from "../../constants/GameStepStyle";
+import {transitionBuilder} from "../../../helpers/Utils";
+import GameGraph from "../../../store/gameModel/GameGraph";
 
 class UScoresScreen extends Component {
 
     static propTypes = {
-        stopGame: PropTypes.func,
-        resetGame: PropTypes.func
+        makeTransition: PropTypes.func,
     }
 
     render() {
@@ -31,13 +32,13 @@ class UScoresScreen extends Component {
                             <BlueButton
                                 title={'Exit'}
                                 onPress={() => {
-                                    this.props.stopGame()
+                                    this.props.makeTransition(GameGraph.SCORE.exitGame)
                                 }}
                             />
                             <BlueButton
                                 title={'Replay'}
                                 onPress={() => {
-                                    this.props.resetGame()
+                                    this.props.makeTransition(GameGraph.SCORE.replay)
                                 }}
                             />
                         </View>
@@ -62,9 +63,7 @@ const styles = StyleSheet.create({
 
 function mapActionToProps(dispatch) {
     return {
-        moveGameStep: bindActionCreators(moveGameStep, dispatch),
-        stopGame: bindActionCreators(stopGame, dispatch),
-        resetGame: bindActionCreators(resetGame, dispatch),
+        makeTransition: transitionBuilder(dispatch)
     }
 }
 

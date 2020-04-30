@@ -11,13 +11,15 @@ import * as tf from '@tensorflow/tfjs';
 import {cameraWithTensors} from '@tensorflow/tfjs-react-native';
 
 import * as GameActions from "../../../store/actions/GameActions";
-import GameSteps from "../../../helpers/GameSteps";
+import GameSteps from "../../../store/gameModel/GameSteps";
 import {predictFromCamera} from "../../../helpers/Prediction"
 import GenericStyles from "../../constants/GenericStyle";
 import ButtonBar from "../../components/ButtonBar";
 import BlueButton from "../../components/BlueButton";
 import GameStepStyle from "../../constants/GameStepStyle";
 import Text from "../../components/Text";
+import {transitionBuilder} from "../../../helpers/Utils";
+import GameGraph from "../../../store/gameModel/GameGraph";
 
 const inputTensorWidth = 152;
 const inputTensorHeight = 200;
@@ -30,8 +32,8 @@ class UFindScreen extends React.Component {
 
     static propTypes = {
         isModelReady: PropTypes.bool,
-        findElement: PropTypes.string,
-        moveGameStep: PropTypes.func
+        makeTransition: PropTypes.func,
+        wordToFind: PropTypes.string
     }
 
     constructor(props) {
@@ -55,6 +57,11 @@ class UFindScreen extends React.Component {
                 const prediction = await predictFromCamera(imageTensor);
 
                 this.setState({results: prediction});
+
+                if(this.checkResponse(prediction)){
+                    this.props.makeTransition(GameGraph.FIND.win)
+                }
+
                 tf.dispose(imageTensor);
             }
 
@@ -76,6 +83,15 @@ class UFindScreen extends React.Component {
         const {status} = await Permissions.askAsync(Permissions.CAMERA);
 
         this.setState({hasCameraPermission: status === 'granted'});
+    }
+
+    checkResponse(predictions){
+        if(!predictions || predictions.length === 0){
+            return false
+        }
+
+        return predictions[0].className.includes(this.props.wordToFind)
+
     }
 
     renderCamView() {
@@ -119,23 +135,30 @@ class UFindScreen extends React.Component {
         return (
             <View style={GameStepStyle.container}>
 
-                <Text style={styles.title}>Find a <Text style={styles.titleBold}>{this.props.findElement}</Text></Text>
+                <Text style={styles.title}>Find a <Text style={styles.titleBold}>{this.props.wordToFind}</Text></Text>
                 <View style={GameStepStyle.body}>
                     {!this.props.isModelReady ?
                         <ActivityIndicator size='large' color='#FF0266'/> : this.renderCamView()}
                     <View style={styles.result}>
                         <Text style={styles.prediction}>
-                        I see{this.state.results.length > 0 && ':'} {this.state.results.length > 0 ? this.state.results[0].className : 'nothing'}
+                            I
+                            see{this.state.results.length > 0 && ':'} {this.state.results.length > 0 ? this.state.results[0].className : 'nothing'}
                         </Text>
                     </View>
                     <ButtonBar
                         style={{marginTop: 40}}
                     >
                         <BlueButton
-                            title={'DRAW instead'}
+                            title={'DRAW'}
                             onPress={() => {
-                                this.props.moveGameStep(GameSteps.DRAW)
+                                this.props.makeTransition(GameGraph.FIND.goToDraw)
                             }}/>
+                        <BlueButton
+                            title={'SKIP'}
+                            onPress={() => {
+                                this.props.makeTransition(GameGraph.FIND.skip)
+                            }}
+                        />
                     </ButtonBar>
                 </View>
             </View>
@@ -148,7 +171,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     prediction: {
-      fontSize: 15
+        fontSize: 15
     },
     title: {
         fontSize: 30,
@@ -165,13 +188,13 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         isModelReady: state.game.findModelReady,
-        findElement: state.game.gameElement
+        wordToFind: state.game.wordToFind
     }
 }
 
 function mapActionToProps(dispatch) {
     return {
-        moveGameStep: bindActionCreators(GameActions.moveGameStep, dispatch),
+        makeTransition: transitionBuilder(dispatch)
     }
 }
 

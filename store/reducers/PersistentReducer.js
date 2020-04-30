@@ -1,7 +1,7 @@
 import {
 
 } from "../actions/TimerActions";
-import {RESET_TIMER} from "../actions/TimerActions";
+import {CLEAR_TIMER} from "../actions/TimerActions";
 import {SET_TIMER} from "../actions/TimerActions";
 import {TICK_TIMER} from "../actions/TimerActions";
 import {TIMER_DONE} from "../actions/TimerActions";

@@ -1,4 +1,4 @@
-import GameSteps from "../../helpers/GameSteps";
+import GameSteps from "../../store/gameModel/GameSteps";
 import Text from "./Text";
 import {StyleSheet, TouchableOpacity} from "react-native";
 import React from "react";

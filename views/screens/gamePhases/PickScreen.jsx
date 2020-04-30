@@ -1,24 +1,21 @@
 import React, {Component} from 'react';
-import {Button, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import * as Constants from "../../constants/Colors"
 import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
 import Text from "../../components/Text";
-import {moveGameStep, resetGame} from "../../../store/actions/GameActions";
-import GameSteps from "../../../helpers/GameSteps";
 import * as PropTypes from "prop-types";
-import PickButton from "../../components/PickButton";
-
-import QUICKDRAW_CLASSES from "../../../assets/model/quickdraw_classes";
-import IMAGENET_CLASSES from "../../../assets/model/imagenet_classes.json";
 import BlueButton from "../../components/BlueButton";
 import GameStepStyle from "../../constants/GameStepStyle";
 import ButtonBar from "../../components/ButtonBar";
+import GameGraph from "../../../store/gameModel/GameGraph";
+import {transitionBuilder} from "../../../helpers/Utils";
 
 class UPickScreen extends Component {
 
     static propTypes = {
-        moveGameStep: PropTypes.func
+        makeTransition: PropTypes.func,
+        wordToDraw: PropTypes.string,
+        wordToFind: PropTypes.string
     }
 
     getRandomElement(classes) {
@@ -26,15 +23,13 @@ class UPickScreen extends Component {
     }
 
     render() {
-        const drawElement = this.getRandomElement(QUICKDRAW_CLASSES)
-        const findElement = this.getRandomElement(IMAGENET_CLASSES)
         return (
             <View style={GameStepStyle.container}>
 
                 <View style={GameStepStyle.body}>
                     <View style={styles.gameChoiceBox}>
                         <Text style={styles.choiceHeader}>Find a:</Text>
-                        <Text style={styles.choice}>{findElement}</Text>
+                        <Text style={styles.choice}>{this.props.wordToFind}</Text>
                     </View>
                     <View style={styles.splitterContainer}>
                         <View style={styles.splitter}/>
@@ -43,39 +38,39 @@ class UPickScreen extends Component {
                     </View>
                     <View style={styles.gameChoiceBox}>
                         <Text style={styles.choiceHeader}>Draw a:</Text>
-                        <Text style={styles.choice}>{drawElement}</Text>
+                        <Text style={styles.choice}>{this.props.wordToDraw}</Text>
                     </View>
 
                     <ButtonBar
                         style={{marginTop: 40}}>
                         <BlueButton title={'DRAW'} onPress={() => {
-                            this.props.moveGameStep(GameSteps.DRAW)
+                           this.props.makeTransition(GameGraph.PICK.goToDraw)
                         }}/>
                         <BlueButton title={'FIND'} onPress={() => {
-                            this.props.moveGameStep(GameSteps.FIND)
+                            this.props.makeTransition(GameGraph.PICK.goToFind)
                         }}/>
                     </ButtonBar>
                 </View>
-
-                <View style={GameStepStyle.footer}>
-                    <Button title={'Reset la partie'} color="red" style={styles.menuEntry} onPress={() => {
-                        this.props.resetGame()
-                    }}/>
-                </View>
-
 
             </View>)
     }
 }
 
-function mapActionToProps(dispatch) {
+function mapStateToProps(state) {
     return {
-        moveGameStep: bindActionCreators(moveGameStep, dispatch),
-        resetGame: bindActionCreators(resetGame, dispatch),
+        isModelReady: state.game.drawModelReady,
+        wordToDraw: state.game.wordToDraw,
+        wordToFind: state.game.wordToFind,
     }
 }
 
-const PickScreen = connect(null, mapActionToProps)(UPickScreen)
+function mapActionToProps(dispatch) {
+    return {
+        makeTransition: transitionBuilder(dispatch)
+    }
+}
+
+const PickScreen = connect(mapStateToProps, mapActionToProps)(UPickScreen)
 export default PickScreen
 
 const styles = StyleSheet.create({

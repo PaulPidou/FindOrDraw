@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         time: state.game.timerTime,
-        score: state.game.timerTime
+        score: state.game.score
     }
 }
 

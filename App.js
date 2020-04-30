@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import '@tensorflow/tfjs-react-native';
-import AppNavigator from "./views/navigation/AppNavigator";
 import {Provider} from "react-redux"
-import {getReduxStore, initStore} from "./store/storeInit";
+import {getRedux, initStore} from "./store/storeInit";
 import {AppLoading} from 'expo';
 import {Ionicons} from '@expo/vector-icons';
 import * as Font from 'expo-font';
+import MainScreenManager from "./views/MainScreenManager";
 
 
 export default class App extends Component {
@@ -27,8 +27,8 @@ export default class App extends Component {
                 MaterialCommunityIcons: require("native-base/Fonts/MaterialCommunityIcons.ttf"),
                 // CourrierNew: require("native-base/Fonts/Co.ttf"),
                 BigStomach: require("./assets/Big-Stomach.ttf"),
-                Selectric: require('./assets/selectric.ttf'),
-                PseudoApl: require('./assets/pseudo_apl.ttf'),
+                // Selectric: require('./assets/selectric.ttf'),
+                // PseudoApl: require('./assets/pseudo_apl.ttf'),
             }),
             initStore()
         ])
@@ -57,8 +57,8 @@ export default class App extends Component {
             )
         } else {
             return (
-                <Provider store={getReduxStore()}>
-                    <AppNavigator/>
+                <Provider store={getRedux()}>
+                    <MainScreenManager/>
                 </Provider>
             )
         }

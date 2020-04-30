@@ -10,3 +10,8 @@ export function uuidv4() {
         return v.toString(16);
     });
 }
+
+
+export function transitionBuilder(dispatch){
+    return (func, ...params) => func(dispatch, ...params)
+}

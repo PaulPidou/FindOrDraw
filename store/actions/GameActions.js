@@ -1,5 +1,5 @@
-import GameSteps from "../../helpers/GameSteps";
-import {RESET_TIMER, resetTimer, setTimer} from "./TimerActions";
+import GameSteps from "../gameModel/GameSteps";
+import {CLEAR_TIMER, clearTimer, setTimer} from "./TimerActions";
 import {getStore} from "../storeInit";
 
 export const SET_TF_READY = 'game/tf_ready';
@@ -9,6 +9,13 @@ export const SET_GAME_STEP = 'game/step';
 export const SET_GAME_STATUS = 'game/status';
 export const SET_FINDORDRAWELEMENT = 'game/findordrawelement'
 
+export const GAME_START = "game/start";
+export const GAME_EXIT = "game/exit";
+
+export const PICK_WORDS = 'game/pickWords'
+
+export const INCREMENT_SCORE = 'game/score/inc'
+
 
 export function markModelAsReady(model) {
     return {type: SET_MODEL_READY, payload: model}
@@ -16,40 +23,4 @@ export function markModelAsReady(model) {
 
 export function markTfAsReady() {
     return {type: SET_TF_READY}
-}
-
-export function startGame() {
-    return (dispatch) => {
-        dispatch({type: SET_GAME_STATUS, payload: true})
-        dispatch({type: SET_GAME_STEP, payload: GameSteps.PICK})
-    }
-}
-
-export function stopGame() {
-    return (dispatch) => {
-        dispatch(resetTimer())
-        dispatch({type: SET_GAME_STATUS, payload: false})
-        dispatch({type: SET_GAME_STEP, payload: null})
-    }
-}
-
-export function resetGame() {
-    return (dispatch) => {
-        dispatch(resetTimer())
-        dispatch({type: SET_GAME_STEP, payload: GameSteps.PICK})
-    }
-}
-
-export function moveGameStep(step, payload=null) {
-    return (dispatch) => {
-        const state = getStore()
-        const currentStep = state.game.gameStep
-        if(!currentStep && step === GameSteps.PICK){
-            setTimer(3 * 60)(dispatch)
-        }
-        dispatch({type: SET_GAME_STEP, payload: step})
-        if(payload) {
-            dispatch({type: SET_FINDORDRAWELEMENT, payload: payload.payload })
-        }
-    }
 }

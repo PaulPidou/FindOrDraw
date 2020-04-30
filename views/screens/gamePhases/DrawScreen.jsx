@@ -10,17 +10,18 @@ import GenericStyles from "../../constants/GenericStyle";
 import {transposeAndApplyAlpha} from "../../../helpers/ImageTransformer";
 import {predictFromDraw} from "../../../helpers/Prediction";
 import * as GameActions from "../../../store/actions/GameActions";
-import GameSteps from "../../../helpers/GameSteps";
+import GameSteps from "../../../store/gameModel/GameSteps";
 import * as PropTypes from "prop-types";
-import {isAndroid, uuidv4} from "../../../helpers/Utils";
+import {isAndroid, transitionBuilder, uuidv4} from "../../../helpers/Utils";
 import ButtonBar from "../../components/ButtonBar";
 import BlueButton from "../../components/BlueButton";
 import GameStepStyle from "../../constants/GameStepStyle";
+import GameGraph from "../../../store/gameModel/GameGraph";
 
 class UDrawScreen extends Component {
 
     static propTypes = {
-        moveGameStep: PropTypes.func,
+        makeTransition: PropTypes.func,
         isModelReady: PropTypes.bool,
         drawElement: PropTypes.string
     }
@@ -121,9 +122,15 @@ class UDrawScreen extends Component {
                 </ButtonBar>
                 <ButtonBar>
                     <BlueButton
-                        title={'FIND instead'}
+                        title={'FIND'}
                         onPress={() => {
-                            this.props.moveGameStep(GameSteps.FIND)
+                            this.props.makeTransition(GameGraph.DRAW.goToFind)
+                        }}
+                    />
+                    <BlueButton
+                        title={'SKIP'}
+                        onPress={() => {
+                            this.props.makeTransition(GameGraph.DRAW.skip)
                         }}
                     />
                 </ButtonBar>
@@ -151,15 +158,14 @@ const styles = StyleSheet.create({
 function mapStateToProps(state) {
     return {
         isModelReady: state.game.drawModelReady,
-        drawElement: state.game.gameElement
+        drawElement: state.game.wordToDraw
     }
 }
 
 function mapActionToProps(dispatch) {
     return {
-        moveGameStep: bindActionCreators(GameActions.moveGameStep, dispatch),
+        makeTransition: transitionBuilder(dispatch)
     }
 }
-
 const DrawScreen = connect(mapStateToProps, mapActionToProps)(UDrawScreen);
 export default DrawScreen

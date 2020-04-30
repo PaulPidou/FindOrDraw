@@ -30,6 +30,6 @@ export const getStore = function () {
     }
 }
 
-export const getReduxStore = function () {
+export const getRedux = function () {
     return store
 }

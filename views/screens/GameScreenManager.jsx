@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {StatusBar, StyleSheet} from "react-native";
+import {Button, StatusBar, StyleSheet, View} from "react-native";
 
 import MainContainer from "../components/MainContainer";
 import {bindActionCreators} from "redux";
@@ -12,16 +12,21 @@ import ScoresScreen from "./gamePhases/ScoresScreen";
 import ScoresBar from "../components/ScoresBar";
 import BarTimer from "../components/BarTimer";
 import Logo from "../components/Logo";
-import GameSteps from "../../helpers/GameSteps";
+import GameSteps from "../../store/gameModel/GameSteps";
+import {transitionBuilder} from "../../helpers/Utils";
+import * as PropTypes from "prop-types";
+import GameGraph from "../../store/gameModel/GameGraph";
+import GameStepStyle from "../constants/GameStepStyle";
+import WinScreen from "./gamePhases/WinScreen";
 
 class UGameScreenManager extends Component {
 
-    componentDidMount() {
-        this.props.startGame()
+    static propTypes = {
+        makeTransition: PropTypes.func
     }
 
     componentWillUnmount() {
-        this.props.endGame()
+        this.props.makeTransition(GameGraph.COMMON.exitGame)
     }
 
     static gameStep = {
@@ -29,6 +34,7 @@ class UGameScreenManager extends Component {
         [GameSteps.DRAW]: <DrawScreen/>,
         [GameSteps.FIND]: <FindScreen/>,
         [GameSteps.SCORE]: <ScoresScreen/>,
+        [GameSteps.WIN]: <WinScreen/>,
     };
 
     renderGameStep() {
@@ -42,6 +48,11 @@ class UGameScreenManager extends Component {
             <Logo/>
             <ScoresBar/>
             {this.renderGameStep()}
+            <View style={GameStepStyle.footer}>
+                <Button title={'Quitter la partie'} color="red" style={styles.menuEntry} onPress={() => {
+                    this.props.makeTransition(GameGraph.COMMON.exitGame)
+                }}/>
+            </View>
         </MainContainer>
     }
 }
@@ -65,9 +76,7 @@ function mapStateToProps(state) {
 
 function mapActionToProps(dispatch) {
     return {
-        startGame: bindActionCreators(GameActions.startGame, dispatch),
-        moveGameStep: bindActionCreators(GameActions.moveGameStep, dispatch),
-        endGame: bindActionCreators(GameActions.stopGame, dispatch)
+        makeTransition: transitionBuilder(dispatch)
     }
 }
 

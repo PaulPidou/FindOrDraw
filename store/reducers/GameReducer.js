@@ -1,12 +1,16 @@
 import {
 
 } from "../actions/TimerActions";
-import {RESET_TIMER} from "../actions/TimerActions";
+import {CLEAR_TIMER} from "../actions/TimerActions";
 import {SET_TIMER} from "../actions/TimerActions";
 import {TICK_TIMER} from "../actions/TimerActions";
 import {TIMER_DONE} from "../actions/TimerActions";
-import {SET_GAME_STATUS, SET_GAME_STEP, SET_FINDORDRAWELEMENT,
-    SET_MODEL_READY, SET_TF_READY} from "../actions/GameActions";
+import {
+    SET_GAME_STATUS, SET_GAME_STEP, SET_FINDORDRAWELEMENT,
+    SET_MODEL_READY, SET_TF_READY, PICK_WORDS, GAME_START, GAME_EXIT, INCREMENT_SCORE
+} from "../actions/GameActions";
+import GameSteps from "../gameModel/GameSteps";
+import {uuidv4} from "../../helpers/Utils";
 
 const initialState = {
     timerId: null,
@@ -19,12 +23,18 @@ const initialState = {
 
     gameStatus: false,
     gameStep: null,
-    gameElement: null
+    gameElement: null,
+    gameId: null,
+
+    wordToFind: null,
+    wordToDraw: null,
+
+    score: 0,
 }
 
 export default function myReducer(state = initialState, action) {
     switch (action.type) {
-        case RESET_TIMER:
+        case CLEAR_TIMER:
             return {...state, timerId: null, timerTime: null, timerIsDone: false }
         case SET_TIMER:
             return {...state, timerId: action.payload.timerId, timerTime: action.payload.time, timerIsDone: false }
@@ -39,10 +49,21 @@ export default function myReducer(state = initialState, action) {
             return {...state, [action.payload === 'DRAW' ? "drawModelReady" : "findModelReady"]: true }
         case SET_GAME_STEP:
             return {...state, gameStep: action.payload }
-        case SET_GAME_STATUS:
-            return {...state, gameStatus: action.payload }
+
+        case GAME_START:
+            return {...state, gameStatus: true, gameStep: GameSteps.PICK, gameId: uuidv4()}
+
+        case GAME_EXIT:
+            return {...state, gameStatus: false, gameStep: null, gameId: null}
+
         case SET_FINDORDRAWELEMENT:
             return {...state, gameElement: action.payload }
+
+        case PICK_WORDS:
+            return {...state, wordToDraw: action.payload.toDraw, wordToFind: action.payload.toFind}
+
+        case INCREMENT_SCORE:
+            return {...state, score: state.score + 1}
 
         default:
             return state

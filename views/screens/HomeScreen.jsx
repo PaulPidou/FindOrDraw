@@ -12,6 +12,8 @@ import Logo from "../components/Logo";
 import GenericStyles from "../constants/GenericStyle";
 import ButtonBar from "../components/ButtonBar";
 import {Icon} from "native-base";
+import {transitionBuilder} from "../../helpers/Utils";
+import GameGraph from "../../store/gameModel/GameGraph";
 
 class UHomeScreen extends Component {
 
@@ -56,10 +58,12 @@ class UHomeScreen extends Component {
                     <Text style={styles.textS2}>You'll have 3 minutes to Find Or Draw the maximum of things.</Text>
 
                     <ButtonBar
-                    style={{marginTop: 40}}>
+                    style={styles.buttonBar}>
                         <BlueButton
                             title="Let's go"
-                            onPress={() => this.props.navigation.navigate('Game')}
+                            onPress={() => {
+                                this.props.makeTransition(GameGraph.COMMON.startGame)
+                            }}
                         />
                     </ButtonBar>
                 </View>
@@ -107,6 +111,11 @@ const styles = StyleSheet.create({
         marginVertical: 40,
         alignItems: 'stretch',
     },
+
+    buttonBar: {
+        flex: 1,
+        marginTop: 60,
+    }
 });
 
 function mapStoreToProps(state) {
@@ -117,5 +126,11 @@ function mapStoreToProps(state) {
     }
 }
 
-const HomeScreen = connect(mapStoreToProps, null)(UHomeScreen)
+function mapActionToProps(dispatch) {
+    return {
+        makeTransition: transitionBuilder(dispatch)
+    }
+}
+
+const HomeScreen = connect(mapStoreToProps, mapActionToProps)(UHomeScreen)
 export default HomeScreen
