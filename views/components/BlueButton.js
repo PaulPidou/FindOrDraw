@@ -15,7 +15,7 @@ export default class PickButton extends React.Component{
 
     render() {
         return <TouchableOpacity style={{...styles.menuEntry, ...this.props.style}} onPress={this.props.onPress}>
-            <Text style={styles.value}>{this.props.title}</Text>
+            <Text style={styles.value} bold>{this.props.title}</Text>
         </TouchableOpacity>
     }
 }
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: Colors.BackgroundColor,
         fontSize: 25,
-        fontWeight: "bold"
     },
 
 });

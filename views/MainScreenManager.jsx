@@ -60,11 +60,7 @@ class UMainScreenManager extends Component {
                 return <HomeScreen/>
             }
         } else {
-            return <LoadingScreen
-                tfReady={this.props.tfReady}
-                drawModelReady={this.props.drawModelReady}
-                findModelReady={this.props.findModelReady}
-            />
+            return <LoadingScreen/>
         }
     }
 }

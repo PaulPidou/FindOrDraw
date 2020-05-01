@@ -48,11 +48,6 @@ class UGameScreenManager extends Component {
             <Logo/>
             <ScoresBar/>
             {this.renderGameStep()}
-            <View style={GameStepStyle.footer}>
-                <Button title={'Quitter la partie'} color="red" style={styles.menuEntry} onPress={() => {
-                    this.props.makeTransition(GameGraph.COMMON.exitGame)
-                }}/>
-            </View>
         </MainContainer>
     }
 }

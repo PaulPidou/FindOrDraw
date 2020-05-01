@@ -28,7 +28,7 @@ class UPickScreen extends Component {
                 <View style={GameStepStyle.body}>
                     <View style={styles.gameChoiceBox}>
                         <Text style={styles.choiceHeader}>Find a:</Text>
-                        <Text style={styles.choice}>{this.props.wordToFind}</Text>
+                        <Text style={styles.choice} bold>{this.props.wordToFind}</Text>
                     </View>
                     <View style={styles.splitterContainer}>
                         <View style={styles.splitter}/>
@@ -37,7 +37,7 @@ class UPickScreen extends Component {
                     </View>
                     <View style={styles.gameChoiceBox}>
                         <Text style={styles.choiceHeader}>Draw a:</Text>
-                        <Text style={styles.choice}>{this.props.wordToDraw}</Text>
+                        <Text style={styles.choice} bold>{this.props.wordToDraw}</Text>
                     </View>
 
                     <ButtonBar
@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
     choice: {
         fontSize: 40,
         marginVertical: 10,
-        fontWeight: 'bold'
     },
     splitterContainer: {
         flexDirection: "row",

@@ -10,6 +10,7 @@ import Logo from "../components/Logo";
 import ButtonBar from "../components/ButtonBar";
 import {transitionBuilder} from "../../helpers/Utils";
 import GameGraph from "../../store/gameModel/GameGraph";
+import LoadingStatus from "../components/LoadingStatus";
 
 class UHomeScreen extends Component {
 
@@ -24,15 +25,16 @@ class UHomeScreen extends Component {
             <MainContainer>
                 <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <Logo/>
+                <LoadingStatus/>
                 <View style={styles.menu}>
                     <Text style={styles.textS1}>Welcome</Text>
                     <View style={styles.spaccer}/>
                     <Text style={styles.textS2}>This game app is simple as its title!</Text>
                     <View style={styles.spaccer}/>
 
-                    <Text style={styles.textBold}>You are given two choices:</Text>
-                    <Text style={styles.textBold}>Find a thing thanks to our camera</Text>
-                    <Text style={styles.textBold}>Draw another thing</Text>
+                    <Text style={styles.textS2} bold>You are given two choices:</Text>
+                    <Text style={styles.textS2} bold>Find a thing thanks to our camera</Text>
+                    <Text style={styles.textS2} bold>Draw another thing</Text>
 
                     <View style={styles.spaccer}/>
 
@@ -59,15 +61,11 @@ const styles = StyleSheet.create({
     },
     textS1:{
         textAlign: 'center',
-        fontSize: 30,
-        marginVertical: 20
+        fontSize: 50,
+        marginBottom: 20,
+        marginTop: 40,
     },
     textS2:{
-        textAlign: 'center',
-        fontSize: 25,
-    },
-    textBold:{
-        fontWeight: 'bold',
         textAlign: 'center',
         fontSize: 25,
     },

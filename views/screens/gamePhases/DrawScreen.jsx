@@ -76,7 +76,7 @@ class UDrawScreen extends Component {
     render() {
         return (
             <View style={GameStepStyle.container}>
-                <Text style={styles.title}>{`Draw a ${this.props.drawElement}`}</Text>
+                <Text style={styles.title}>Draw a <Text bold>{this.props.drawElement}</Text></Text>
                 <View style={GenericStyles.gameZone}>
                     <View style={GenericStyles.sketchContainer}>
                         <ExpoPixi.Sketch
@@ -164,5 +164,6 @@ function mapActionToProps(dispatch) {
         makeTransition: transitionBuilder(dispatch)
     }
 }
+
 const DrawScreen = connect(mapStateToProps, mapActionToProps)(UDrawScreen);
 export default DrawScreen

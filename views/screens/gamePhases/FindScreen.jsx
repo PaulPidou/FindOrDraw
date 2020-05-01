@@ -134,7 +134,7 @@ class UFindScreen extends React.Component {
         return (
             <View style={GameStepStyle.container}>
 
-                <Text style={styles.title}>Find a <Text style={styles.titleBold}>{this.props.wordToFind}</Text></Text>
+                <Text style={styles.title}>Find a <Text bold>{this.props.wordToFind}</Text></Text>
                 <View style={GameStepStyle.body}>
                     {!this.props.isModelReady ?
                         <ActivityIndicator size='large' color='#FF0266'/> : this.renderCamView()}
@@ -176,10 +176,6 @@ const styles = StyleSheet.create({
         fontSize: 30,
         textAlign: 'center',
         marginTop: 15
-    },
-    titleBold: {
-        fontSize: 30,
-        fontWeight: 'bold',
     }
 })
 
