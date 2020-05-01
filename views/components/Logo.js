@@ -1,6 +1,5 @@
 import React from "react";
 import {StyleSheet, Text as NativeText } from "react-native";
-import {FontColorPrimary} from "../constants/Colors";
 
 export default function Logo({style}){
     return <NativeText style={styles.text} >
@@ -12,9 +11,9 @@ const styles = StyleSheet.create({
     text: {
         textAlign: 'center',
         fontSize: 65,
-        color: "black",
+        color: "#222",
         fontFamily: 'BigStomach',
-        marginVertical: 15
+        marginVertical: 10
     }
 })
 

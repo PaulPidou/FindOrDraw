@@ -1,6 +1,5 @@
 import React from 'react';
 import {ActivityIndicator, Platform, StyleSheet, View} from 'react-native';
-import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as PropTypes from "prop-types";
 
@@ -136,13 +135,10 @@ class UFindScreen extends React.Component {
                         <ActivityIndicator size='large' color='#FF0266'/> : this.renderCamView()}
                     <View style={styles.result}>
                         <Text style={styles.prediction}>
-                            I
-                            see{this.state.results.length > 0 && ':'} {this.state.results.length > 0 ? this.state.results[0].className : 'nothing'}
+                            I see{this.state.results.length > 0 && ':'} {this.state.results.length > 0 ? this.state.results[0].className : 'nothing'}
                         </Text>
                     </View>
-                    <ButtonBar
-                        style={{marginTop: 40}}
-                    >
+                    <ButtonBar style={{marginTop: 20}}>
                         <BlueButton
                             title={'DRAW'}
                             onPress={() => {

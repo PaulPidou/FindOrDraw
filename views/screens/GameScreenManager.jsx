@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {StatusBar, StyleSheet} from "react-native";
+import {Dimensions, StatusBar, StyleSheet} from "react-native";
 
 import MainContainer from "../components/MainContainer";
 import {connect} from 'react-redux'
@@ -40,10 +40,15 @@ class UGameScreenManager extends Component {
     }
 
     render() {
+        console.log(Dimensions.get('window').height)
         return <MainContainer style={styles.container}>
             <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
             <BarTimer maxTime={3 * 60} />
-            <Logo/>
+            {
+                Dimensions.get('window').height > 800 && (
+                    <Logo />
+                )
+            }
             <ScoresBar/>
             {this.renderGameStep()}
         </MainContainer>

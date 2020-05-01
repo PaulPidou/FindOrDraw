@@ -27,13 +27,7 @@ class UScoresScreen extends Component {
                         <Text style={styles.score}>{this.props.score}</Text>
                         <ButtonBar>
                             <BlueButton
-                                title={'Exit'}
-                                onPress={() => {
-                                    this.props.makeTransition(GameGraph.SCORE.exitGame)
-                                }}
-                            />
-                            <BlueButton
-                                title={'Replay'}
+                                title={'Play again!'}
                                 onPress={() => {
                                     this.props.makeTransition(GameGraph.SCORE.replay)
                                 }}
@@ -58,7 +52,7 @@ const styles = StyleSheet.create({
     score: {
         textAlign: 'center',
         fontSize: 100,
-        marginBottom: 20
+        marginBottom: 10
     }
 });
 function mapStateToProps(state) {

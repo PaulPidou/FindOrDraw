@@ -9,7 +9,7 @@ const GenericStyles = StyleSheet.create({
     },
     gameZone: {
         alignItems: 'center',
-        padding: 30
+        padding: 10
     },
     sketchContainer: {},
     sketch: {

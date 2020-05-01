@@ -34,7 +34,7 @@ class UScoresBar extends Component{
 const styles = StyleSheet.create({
     scoreBar: {
         flexDirection: 'row',
-        marginVertical: 15,
+        marginVertical: 5,
         marginHorizontal: 40,
     },
     timerContainer: {

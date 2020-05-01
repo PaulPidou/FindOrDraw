@@ -42,7 +42,7 @@ class UDrawScreen extends Component {
             }
         }
         this.setState({appState: nextAppState});
-    };
+    }
 
     async componentDidMount() {
         AppState.addEventListener('change', this.handleAppStateChangeAsync);
@@ -101,9 +101,7 @@ class UDrawScreen extends Component {
                         }
                     })()}
                 </View>
-                <ButtonBar
-                    style={{marginTop: 40}}
-                >
+                <ButtonBar style={{marginTop: 20}}>
                     <BlueButton
                         title={'CLEAR'}
                         onPress={() => {
