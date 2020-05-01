@@ -1,8 +1,13 @@
 import React, {Component} from 'react'
-import {View, Image, Text, StyleSheet} from 'react-native'
+import {View, Image, StyleSheet, Dimensions, StatusBar} from 'react-native'
 import {BackgroundColor} from "../constants/Colors";
 import * as PropTypes from "prop-types";
 import {Icon} from "native-base";
+import Logo from "../components/Logo";
+import MainContainer from "../components/MainContainer";
+import Text from "../components/Text";
+import LoadingStatus from "../components/LoadingStatus";
+
 
 export default class LoadingScreen extends Component {
 
@@ -14,53 +19,34 @@ export default class LoadingScreen extends Component {
 
     render() {
         return (
-            <View
-                style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: BackgroundColor }}
-            >
-                <View style={styles.statusContainer}>
-                    <View style={styles.statusGroup}>
-                        <Icon style={styles.statusIcon} name={this.props.tfReady ? 'md-checkmark' : 'md-close'}/>
-                        <Text>TensorFlow</Text>
-                    </View>
-                    <View style={styles.statusGroup}>
-                        <Icon style={styles.statusIcon} name={this.props.drawModelReady ? 'md-checkmark' : 'md-close'}/>
-                        <Text>Draw Model</Text>
-                    </View>
-                    <View style={styles.statusGroup}>
-                        <Icon style={styles.statusIcon} name={this.props.findModelReady ? 'md-checkmark' : 'md-close'}/>
-                        <Text>Find Model</Text>
-                    </View>
-                </View>
+            <MainContainer style={{alignItems: 'center'}}>
+                <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
+                <Logo/>
+                <LoadingStatus/>
+
                 <View style={styles.loadingContainer}>
                     <Image
-                        style={{ width : 120, height: 120 }}
+                        style={{width: 120, height: 120}}
                         source={require('../../assets/loading.gif')}
                     />
                 </View>
-                <Text style={{ fontFamily: 'BigStomach', fontSize: 50, color: '#fff', marginTop: 150}}>
-                    FindOrDraw</Text>
-            </View>
+
+                <Text style={{fontSize: 40}}>LOADING ...</Text>
+            </MainContainer>
         )
     }
 }
 
+const halfOfScreen = Dimensions.get('window').width / 2
+
 const styles = StyleSheet.create({
-    statusContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly'
-    },
-    statusGroup: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    statusIcon: {
-        fontSize: 20,
-        marginHorizontal: 5
-    },
+
     loadingContainer: {
-        width: 170, height: 170, borderRadius: 170/2,
+        width: halfOfScreen, height: halfOfScreen, borderRadius: halfOfScreen / 2,
         justifyContent: 'center', alignItems: 'center',
-        backgroundColor: '#fff', marginTop: 150,
-        shadowColor: "#000", shadowOffset: { width: 0, height: 5 },
-        shadowOpacity: 0.34, shadowRadius: 6.27, elevation: 10}
+        backgroundColor: '#fff',
+        marginVertical: 150,
+        shadowColor: "#000", shadowOffset: {width: 0, height: 5},
+        shadowOpacity: 0.34, shadowRadius: 6.27, elevation: 10
+    }
 })
