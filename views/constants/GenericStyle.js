@@ -1,21 +1,16 @@
 import {Dimensions, StyleSheet} from "react-native";
-import * as Colors from "./Colors";
-import Constants from "expo-constants";
 
 const GenericStyles = StyleSheet.create({
-
     buttonBar: {
         flexDirection: "row",
         justifyContent: 'space-evenly',
         alignItems: "flex-start",
         margin: 5
     },
-
     gameZone: {
         alignItems: 'center',
         padding: 30
     },
-
     sketchContainer: {},
     sketch: {
         backgroundColor: '#fff',
@@ -25,8 +20,7 @@ const GenericStyles = StyleSheet.create({
     camera : {
         width: 600/2,
         height: 800/2,
-    },
-
+    }
 });
 
 export default GenericStyles

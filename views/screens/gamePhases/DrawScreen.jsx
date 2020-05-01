@@ -1,16 +1,13 @@
 import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
 import {AppState, StyleSheet, View} from 'react-native';
-import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {Button} from 'native-base';
+import * as tf from "@tensorflow/tfjs";
 
 import Text from "../../components/Text";
 import GenericStyles from "../../constants/GenericStyle";
 import {transposeAndApplyAlpha} from "../../../helpers/ImageTransformer";
 import {predictFromDraw} from "../../../helpers/Prediction";
-import * as GameActions from "../../../store/actions/GameActions";
-import GameSteps from "../../../store/gameModel/GameSteps";
 import * as PropTypes from "prop-types";
 import {isAndroid, transitionBuilder, uuidv4} from "../../../helpers/Utils";
 import ButtonBar from "../../components/ButtonBar";
