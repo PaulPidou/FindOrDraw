@@ -25,7 +25,6 @@ class UPickScreen extends Component {
     render() {
         return (
             <View style={GameStepStyle.container}>
-
                 <View style={GameStepStyle.body}>
                     <View style={styles.gameChoiceBox}>
                         <Text style={styles.choiceHeader}>Find a:</Text>
@@ -42,12 +41,12 @@ class UPickScreen extends Component {
                     </View>
 
                     <ButtonBar
-                        style={{marginTop: 40}}>
-                        <BlueButton title={'DRAW'} onPress={() => {
-                           this.props.makeTransition(GameGraph.PICK.goToDraw)
-                        }}/>
+                        style={{marginTop: 20}}>
                         <BlueButton title={'FIND'} onPress={() => {
                             this.props.makeTransition(GameGraph.PICK.goToFind)
+                        }}/>
+                        <BlueButton title={'DRAW'} onPress={() => {
+                            this.props.makeTransition(GameGraph.PICK.goToDraw)
                         }}/>
                     </ButtonBar>
                 </View>
