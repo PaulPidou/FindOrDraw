@@ -14,7 +14,6 @@ import GameSteps from "../../store/gameModel/GameSteps";
 import {transitionBuilder} from "../../helpers/Utils";
 import * as PropTypes from "prop-types";
 import GameGraph from "../../store/gameModel/GameGraph";
-import GameStepStyle from "../constants/GameStepStyle";
 import WinScreen from "./gamePhases/WinScreen";
 
 class UGameScreenManager extends Component {
@@ -40,15 +39,10 @@ class UGameScreenManager extends Component {
     }
 
     render() {
-        console.log(Dimensions.get('window').height)
         return <MainContainer style={styles.container}>
             <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
             <BarTimer maxTime={3 * 60} />
-            {
-                Dimensions.get('window').height > 800 && (
-                    <Logo />
-                )
-            }
+            { Dimensions.get('window').height > 800 && (<Logo />) }
             <ScoresBar/>
             {this.renderGameStep()}
         </MainContainer>

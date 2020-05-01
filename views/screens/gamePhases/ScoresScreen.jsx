@@ -20,7 +20,6 @@ class UScoresScreen extends Component {
     render() {
         return (
             <View style={GameStepStyle.container}>
-
                     <View style={GameStepStyle.body}>
                         <Text style={styles.gameOverText}>Game Over!</Text>
                         <Text style={styles.scoreText}>Score:</Text>
