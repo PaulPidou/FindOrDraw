@@ -25,7 +25,6 @@ class UHomeScreen extends Component {
             <MainContainer>
                 <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <Logo/>
-                <LoadingStatus/>
                 <View style={styles.menu}>
                     <Text style={styles.textS1}>Welcome</Text>
                     <View style={styles.spaccer}/>
@@ -62,8 +61,8 @@ const styles = StyleSheet.create({
     textS1:{
         textAlign: 'center',
         fontSize: 50,
-        marginBottom: 20,
-        marginTop: 40,
+        marginBottom: 10,
+        marginTop: 0,
     },
     textS2:{
         textAlign: 'center',
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
     },
     buttonBar: {
         flex: 1,
-        marginTop: 50,
+        marginTop: 20,
     }
 });
 
