@@ -2,11 +2,9 @@ import * as ExpoPixi from 'expo-pixi';
 import React, {Component} from 'react';
 import {AppState, StyleSheet, View} from 'react-native';
 import {connect} from "react-redux";
-import * as tf from "@tensorflow/tfjs";
 
 import Text from "../../components/Text";
 import GenericStyles from "../../constants/GenericStyle";
-import {transposeAndApplyAlpha} from "../../../helpers/ImageTransformer";
 import {predictFromDraw} from "../../../helpers/Prediction";
 import * as PropTypes from "prop-types";
 import {isAndroid, transitionBuilder, uuidv4} from "../../../helpers/Utils";
@@ -67,9 +65,7 @@ class UDrawScreen extends Component {
         const pixels = this.sketch.renderer.extract.pixels()
         const length = Math.sqrt(pixels.length / 4)
 
-        const normalizedRGBPixels = transposeAndApplyAlpha(pixels, length, length)
-        const prediction = await predictFromDraw(normalizedRGBPixels, length, length)
-
+        const prediction = await predictFromDraw(pixels, length, length)
         this.setState({prediction, thinking: false})
     };
 

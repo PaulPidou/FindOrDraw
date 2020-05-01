@@ -15,10 +15,11 @@ export async function loadDrawModel(){
 }
 
 export async function predictFromDraw(sortedRGBPixels, width, height){
-    const grayScaleImg = tf.tensor(sortedRGBPixels).reshape([width, height, 1])
+    const tensor = tf.tensor(sortedRGBPixels).reshape([width, height, 4])
 
     const scaledImage = tf.tidy(() => {
-        //const grayScaleImg = tf.max(image, 2).expandDims(2)
+        const image = tf.reverse(tensor, 0) // Flip horizontally
+        const grayScaleImg = tf.max(image, 2).expandDims(2)
         const resizedImage = tf.image.resizeBilinear(grayScaleImg, [64, 64])
         const batchedImage = resizedImage.expandDims(0)
         return batchedImage.toFloat().div(tf.scalar(127.5)).sub(tf.scalar(1))

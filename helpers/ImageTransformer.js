@@ -1,15 +1,5 @@
-import * as tf from "@tensorflow/tfjs";
 
 export function transposeAndApplyAlpha(bottomFirstLTRPixels, width, height){
-    /*
-    const rTensor = tf.tensor(pixels).reshape([length, length, 4])
-        const TLPimage = tf.reverse(rTensor, 0) // Flip horizontally
-        const imageWA = tf.mul(TLPimage, tf.tensor([[[1, 1, 1, 0]]])) // Remove alpha
-        //const image = tf.sub(tf.tensor([[[255, 255, 255, 0]]]), imageWA) // Inverse color
-        const grayScaleImg = tf.max(imageWA, 2).expandDims(2)
-        const gImage = grayScaleImg.flatten().arraySync()
-     */
-
         // Rotate the Image, the screen need data in a bottom to top order column by columns
         // We will also remove the alpha layer by applying the color over a black backend
         const RGBBackground = [0, 0, 0]
