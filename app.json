@@ -24,7 +24,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "name.paulpidou.findordraw"
+      "package": "name.cognitivecompany.findordraw"
     }
   }
 }
