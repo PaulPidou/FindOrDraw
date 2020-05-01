@@ -110,7 +110,6 @@ class UFindScreen extends React.Component {
             };
         }
 
-
         return (
             <View style={GenericStyles.gameZone}>
                 <TensorCamera

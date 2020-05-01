@@ -8,6 +8,7 @@ import * as tf from "@tensorflow/tfjs";
 import {loadDrawModel, loadMobilenetModel} from "../helpers/Prediction";
 import GameScreenManager from "./screens/GameScreenManager";
 import HomeScreen from "./screens/HomeScreen";
+import LoadingScreen from "./screens/LoadingScreen";
 import * as GameActions from '../store/actions/GameActions';
 
 const Stack = createStackNavigator();
@@ -17,6 +18,9 @@ class UMainScreenManager extends Component {
     static propTypes = {
         gameMode: PropTypes.string,
         isGameRunning: PropTypes.bool,
+        tfReady: PropTypes.bool,
+        drawModelReady: PropTypes.bool,
+        findModelReady: PropTypes.bool,
         markTfAsReady : PropTypes.func,
         markModelAsReady : PropTypes.func,
     }
@@ -49,10 +53,18 @@ class UMainScreenManager extends Component {
 
 
     render() {
-        if(this.props.isGameRunning){
-            return <GameScreenManager/>
+        if(this.props.tfReady && this.props.drawModelReady && this.props.findModelReady) {
+            if(this.props.isGameRunning){
+                return <GameScreenManager/>
+            } else {
+                return <HomeScreen/>
+            }
         } else {
-            return <HomeScreen/>
+            return <LoadingScreen
+                tfReady={this.props.tfReady}
+                drawModelReady={this.props.drawModelReady}
+                findModelReady={this.props.findModelReady}
+            />
         }
     }
 }
@@ -61,6 +73,9 @@ function maStateToProps(state) {
     return {
         isGameRunning: state.game.gameStatus,
         gameMode: state.game.gameStep,
+        tfReady: state.game.tfReady,
+        drawModelReady: state.game.drawModelReady,
+        findModelReady: state.game.findModelReady,
     }
 }
 
