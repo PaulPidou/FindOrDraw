@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         fontSize: 65,
         color: "black",
         fontFamily: 'BigStomach',
-        marginVertical: 20
+        marginVertical: 15
     }
 })
 

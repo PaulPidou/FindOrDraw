@@ -25,7 +25,6 @@ class UHomeScreen extends Component {
                 <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
                 <Logo/>
                 <View style={styles.menu}>
-
                     <Text style={styles.textS1}>Welcome</Text>
                     <View style={styles.spaccer}/>
                     <Text style={styles.textS2}>This game app is simple as its title!</Text>
@@ -37,7 +36,7 @@ class UHomeScreen extends Component {
 
                     <View style={styles.spaccer}/>
 
-                    <Text style={styles.textS2}>You'll have 3 minutes to Find Or Draw the maximum of things.</Text>
+                    <Text style={styles.textS2}>You'll have 3 minutes to Find Or Draw the maximum of things</Text>
 
                     <ButtonBar
                     style={styles.buttonBar}>
@@ -56,16 +55,16 @@ class UHomeScreen extends Component {
 
 const styles = StyleSheet.create({
     spaccer: {
-        marginVertical: 10,
+        marginVertical: 8,
     },
     textS1:{
         textAlign: 'center',
-        fontSize: 50,
+        fontSize: 30,
         marginVertical: 20
     },
     textS2:{
         textAlign: 'center',
-        fontSize: 35,
+        fontSize: 25,
     },
     textBold:{
         fontWeight: 'bold',
@@ -75,13 +74,12 @@ const styles = StyleSheet.create({
     menu: {
         flex: 2,
         justifyContent: 'center',
-        marginVertical: 40,
+        marginVertical: 5,
         alignItems: 'stretch',
     },
-
     buttonBar: {
         flex: 1,
-        marginTop: 60,
+        marginTop: 50,
     }
 });
 
