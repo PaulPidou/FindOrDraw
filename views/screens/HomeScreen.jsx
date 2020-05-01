@@ -10,7 +10,6 @@ import Logo from "../components/Logo";
 import ButtonBar from "../components/ButtonBar";
 import {transitionBuilder} from "../../helpers/Utils";
 import GameGraph from "../../store/gameModel/GameGraph";
-import LoadingStatus from "../components/LoadingStatus";
 
 class UHomeScreen extends Component {
 

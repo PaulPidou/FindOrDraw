@@ -25,9 +25,9 @@ export default class App extends Component {
                 Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
                 Ionicons: require("native-base/Fonts/Ionicons.ttf"),
                 MaterialCommunityIcons: require("native-base/Fonts/MaterialCommunityIcons.ttf"),
-                BigStomach: require("./assets/Big-Stomach.ttf"),
-                Monospace: require("./assets/monospace.medium.ttf"),
-                MonospaceBold: require("./assets/monospace.bold.ttf"),
+                BigStomach: require("./assets/fonts/Big-Stomach.ttf"),
+                Monospace: require("./assets/fonts/monospace.medium.ttf"),
+                MonospaceBold: require("./assets/fonts/monospace.bold.ttf"),
             }),
             initStore()
         ])

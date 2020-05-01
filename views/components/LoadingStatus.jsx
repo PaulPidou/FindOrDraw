@@ -37,7 +37,8 @@ class ULoadingStatus extends Component{
 const styles = StyleSheet.create({
     statusContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        justifyContent: 'space-evenly',
+        marginTop: 30
     },
     statusGroup: {
         flexDirection: 'row',

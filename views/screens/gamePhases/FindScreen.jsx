@@ -10,8 +10,6 @@ import {Camera} from 'expo-camera';
 import * as tf from '@tensorflow/tfjs';
 import {cameraWithTensors} from '@tensorflow/tfjs-react-native';
 
-import * as GameActions from "../../../store/actions/GameActions";
-import GameSteps from "../../../store/gameModel/GameSteps";
 import {predictFromCamera} from "../../../helpers/Prediction"
 import GenericStyles from "../../constants/GenericStyle";
 import ButtonBar from "../../components/ButtonBar";
@@ -91,7 +89,6 @@ class UFindScreen extends React.Component {
         }
 
         return predictions[0].className.includes(this.props.wordToFind)
-
     }
 
     renderCamView() {
@@ -133,7 +130,6 @@ class UFindScreen extends React.Component {
     render() {
         return (
             <View style={GameStepStyle.container}>
-
                 <Text style={styles.title}>Find a <Text bold>{this.props.wordToFind}</Text></Text>
                 <View style={GameStepStyle.body}>
                     {!this.props.isModelReady ?

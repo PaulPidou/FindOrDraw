@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {createStackNavigator} from '@react-navigation/stack';
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import * as PropTypes from "prop-types";
@@ -10,8 +9,6 @@ import GameScreenManager from "./screens/GameScreenManager";
 import HomeScreen from "./screens/HomeScreen";
 import LoadingScreen from "./screens/LoadingScreen";
 import * as GameActions from '../store/actions/GameActions';
-
-const Stack = createStackNavigator();
 
 class UMainScreenManager extends Component {
 
@@ -53,7 +50,7 @@ class UMainScreenManager extends Component {
 
 
     render() {
-        if(this.props.tfReady && this.props.drawModelReady && this.props.findModelReady) {
+        if(this.props.tfReady && this.props.drawModelReady && this.props.findModelReady && false) {
             if(this.props.isGameRunning){
                 return <GameScreenManager/>
             } else {

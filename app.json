@@ -8,11 +8,11 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo_app.png",
+    "icon": "./assets/images/logo_app.png",
     "splash": {
-      "image": "./assets/splash-F.png",
+      "image": "./assets/images/splash-F.png",
       "resizeMode": "contain",
-      "backgroundColor": "#01374A"
+      "backgroundColor": "#FFD139"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

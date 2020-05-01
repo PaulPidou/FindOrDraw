@@ -67,7 +67,11 @@ class UDrawScreen extends Component {
 
         const prediction = await predictFromDraw(pixels, length, length)
         this.setState({prediction, thinking: false})
-    };
+
+        if(this.props.drawElement === prediction){
+            this.props.makeTransition(GameGraph.DRAW.win)
+        }
+    }
 
     render() {
         return (
