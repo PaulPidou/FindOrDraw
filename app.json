@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "findordraw",
-    "slug": "FindOrDraw",
+    "name": "FindOrDraw",
+    "slug": "findordraw",
     "platforms": [
       "ios",
       "android"
