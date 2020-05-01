@@ -50,7 +50,7 @@ class UMainScreenManager extends Component {
 
 
     render() {
-        if(this.props.tfReady && this.props.drawModelReady && this.props.findModelReady) {
+        if(this.props.tfReady && this.props.drawModelReady && this.props.findModelReady && true) {
             if(this.props.isGameRunning){
                 return <GameScreenManager/>
             } else {
