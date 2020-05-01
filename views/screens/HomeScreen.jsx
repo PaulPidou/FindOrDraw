@@ -68,13 +68,13 @@ const styles = StyleSheet.create({
         fontSize: 25,
     },
     menu: {
-        flex: 2,
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'space-evenly',
+        maxHeight: 700,
         marginVertical: 5,
-        alignItems: 'stretch',
+        alignItems: 'center',
     },
     buttonBar: {
-        flex: 1,
         marginTop: 20,
     }
 });
