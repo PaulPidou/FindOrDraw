@@ -51,7 +51,7 @@ export default function myReducer(state = initialState, action) {
             return {...state, gameStep: action.payload }
 
         case GAME_START:
-            return {...state, gameStatus: true, gameStep: GameSteps.PICK, gameId: uuidv4()}
+            return {...state, gameStatus: true, gameStep: GameSteps.PICK, gameId: uuidv4(), score: 0}
 
         case GAME_EXIT:
             return {...state, gameStatus: false, gameStep: null, gameId: null}

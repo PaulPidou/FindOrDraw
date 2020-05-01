@@ -24,7 +24,7 @@ class UWinScreen extends Component {
     componentDidMount() {
         setTimeout(() => {
             this.props.makeTransition(GameGraph.WIN.next)
-        })
+        }, 1500)
     }
 
     render() {

@@ -13,22 +13,27 @@ import GenericStyles from "../../constants/GenericStyle";
 import GameStepStyle from "../../constants/GameStepStyle";
 import {transitionBuilder} from "../../../helpers/Utils";
 import GameGraph from "../../../store/gameModel/GameGraph";
+import ButtonBar from "../../components/ButtonBar";
 
 class UScoresScreen extends Component {
 
     static propTypes = {
         makeTransition: PropTypes.func,
+        score: PropTypes.number,
+
     }
 
     render() {
         return (
-            <View style={styles.container}>
-                <View>
-                    <Text>Scores !</Text>
+            <View style={GameStepStyle.container}>
 
+                    <View style={GameStepStyle.body}>
+                        <Text style={styles.gameOverText}>Game Over!</Text>
 
-                    <View style={GameStepStyle.footer}>
-                        <View style={GenericStyles.buttonBar}>
+                        <Text style={styles.scoreText}>Score:</Text>
+                        <Text style={styles.score}>{this.props.score}</Text>
+                        <ButtonBar>
+
                             <BlueButton
                                 title={'Exit'}
                                 onPress={() => {
@@ -41,25 +46,34 @@ class UScoresScreen extends Component {
                                     this.props.makeTransition(GameGraph.SCORE.replay)
                                 }}
                             />
-                        </View>
+                        </ButtonBar>
                     </View>
-
-                </View>
             </View>)
     }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Colors.BackgroundColor,
-        justifyContent: 'flex-start',
-        alignItems: 'stretch',
-        paddingTop: Constants.statusBarHeight,
-        paddingHorizontal: 20
+    gameOverText: {
+        textAlign: 'center',
+        fontSize: 60,
+        marginTop: 30,
     },
+    scoreText: {
+        textAlign: 'center',
+        marginTop: 100,
+        fontSize: 55
+    },
+    score: {
+        textAlign: 'center',
+        fontSize: 100,
+        marginBottom: 100
+    }
 });
-
+function mapStateToProps(state) {
+    return {
+        score: state.game.score,
+    }
+}
 
 function mapActionToProps(dispatch) {
     return {
@@ -67,5 +81,5 @@ function mapActionToProps(dispatch) {
     }
 }
 
-const ScoresScreen = connect(null, mapActionToProps)(UScoresScreen)
+const ScoresScreen = connect(mapStateToProps, mapActionToProps)(UScoresScreen)
 export default ScoresScreen
