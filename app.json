@@ -2,10 +2,7 @@
   "expo": {
     "name": "FindOrDraw",
     "slug": "findordraw",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo_square.png",
@@ -20,11 +17,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
-      "package": "name.cognitivecompany.findordraw"
+      "package": "name.cognitivecompany.findordraw",
+      "permissions": ["CAMERA"]
     }
   }
 }
