@@ -42,7 +42,7 @@ class UGameScreenManager extends Component {
         return <MainContainer style={styles.container}>
             <StatusBar barStyle='dark-content' backgroundColor={"rgba(0,0,0,0)"} translucent={true}/>
             <BarTimer maxTime={3 * 60} />
-            { Dimensions.get('window').height > 800 && (<Logo />) }
+            { Dimensions.get('window').height > 900 && (<Logo />) }
             <ScoresBar/>
             {this.renderGameStep()}
         </MainContainer>

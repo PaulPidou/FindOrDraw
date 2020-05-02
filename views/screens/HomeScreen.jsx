@@ -29,15 +29,11 @@ class UHomeScreen extends Component {
                     <View style={styles.spaccer}/>
                     <Text style={styles.textS2}>This game app is simple as its title!</Text>
                     <View style={styles.spaccer}/>
-
                     <Text style={styles.textS2} bold>You are given two choices:</Text>
                     <Text style={styles.textS2} bold>Find a thing thanks to our camera</Text>
                     <Text style={styles.textS2} bold>Draw another thing</Text>
-
                     <View style={styles.spaccer}/>
-
                     <Text style={styles.textS2}>You'll have 3 minutes to Find Or Draw the maximum of things</Text>
-
                     <ButtonBar
                     style={styles.buttonBar}>
                         <BlueButton
