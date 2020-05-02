@@ -18,7 +18,7 @@
       "**/*"
     ],
     "android": {
-      "package": "name.cognitivecompany.findordraw",
+      "package": "com.cognitivecompany.findordraw",
       "permissions": ["CAMERA"]
     }
   }
